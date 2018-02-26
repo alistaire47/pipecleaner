@@ -3,6 +3,16 @@
 
 # pipecleaner
 
+[![Travis build
+status](https://travis-ci.org/alistaire47/pipecleaner.svg?branch=master)](https://travis-ci.org/alistaire47/pipecleaner)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/alistaire47/pipecleaner?branch=master&svg=true)](https://ci.appveyor.com/project/alistaire47/pipecleaner)
+[![Coverage
+status](https://codecov.io/gh/alistaire47/pipecleaner/branch/master/graph/badge.svg)](https://codecov.io/github/alistaire47/pipecleaner?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/pipecleaner)](https://cran.r-project.org/package=pipecleaner)
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 pipecleaner is a utility R package to debug pipelines using the magrittr
 `%>%` pipe. Its `debug_pipeline` launches the debugging browser on the
 input pipeline in a form that allows the user to step through the
@@ -75,7 +85,7 @@ debug_pipeline(
 #> debug: print(dot4 <- 1:5 %>% rev() %>% {
 #>     . * 2
 #> } %>% sample())
-#> [1] 10  8  4  6  2
+#> [1] 10  6  2  8  4
 #> exiting from: pipeline_function()
 ```
 
