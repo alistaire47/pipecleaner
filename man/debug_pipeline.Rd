@@ -2,21 +2,21 @@
 % Please edit documentation in R/debug_pipeline.R
 \name{debug_pipeline}
 \alias{debug_pipeline}
-\title{Run a pipeline element-by-element in the debugging browser}
+\title{Run a pipeline step-by-step in the debugging browser}
 \usage{
 debug_pipeline(pipeline)
 }
 \arguments{
-\item{pipeline}{A pipeline to debug element-by-element. Can be an expression
-or a string of code. If missing, uses the text highlighted in RStudio's
+\item{pipeline}{A pipeline to debug step-by-step Can be an expression or a
+string of code. If missing, uses the text highlighted in RStudio's
 source editor.}
 }
 \description{
 \code{debug_pipeline} creates a function out of the input pipeline with each line
-adding an additional element from the pipeline and calls the debugging
-browser on it. Each line run prints to the console plus stores the result to
-a variable of the form \code{dot[N]}, where \code{[N]} is the index of the element in
-the pipeline, so results can easily be replicated or adjusted in the
+adding an additional step from the pipeline and calls the debugging browser
+on the function. Each line run prints to the console plus stores the result
+to a variable of the form \code{dot[N]}, where \code{[N]} is the index of the element
+in the pipeline, so results can easily be replicated or adjusted in the
 debugging console.
 }
 \details{
@@ -28,11 +28,13 @@ For a full explanation of the special commands available in the debugging
 browser, see \code{\link{browser}}.
 }
 \examples{
+\dontrun{
 library(magrittr)
 
 debug_pipeline(
     1:5 \%>\% rev() \%>\% {. * 2} \%>\% sample()
 )
+}
 
 }
 \seealso{

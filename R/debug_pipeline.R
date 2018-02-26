@@ -1,10 +1,10 @@
-#' Run a pipeline element-by-element in the debugging browser
+#' Run a pipeline step-by-step in the debugging browser
 #'
 #' `debug_pipeline` creates a function out of the input pipeline with each line
-#' adding an additional element from the pipeline and calls the debugging
-#' browser on it. Each line run prints to the console plus stores the result to
-#' a variable of the form `dot[N]`, where `[N]` is the index of the element in
-#' the pipeline, so results can easily be replicated or adjusted in the
+#' adding an additional step from the pipeline and calls the debugging browser
+#' on the function. Each line run prints to the console plus stores the result
+#' to a variable of the form `dot[N]`, where `[N]` is the index of the element
+#' in the pipeline, so results can easily be replicated or adjusted in the
 #' debugging console.
 #'
 #' `debug_pipeline` can also be called interactively in RStudio via the "Debug
@@ -14,16 +14,18 @@
 #' For a full explanation of the special commands available in the debugging
 #' browser, see [`browser`].
 #'
-#' @param pipeline A pipeline to debug element-by-element. Can be an expression
-#'     or a string of code. If missing, uses the text highlighted in RStudio's
+#' @param pipeline A pipeline to debug step-by-step Can be an expression or a
+#'     string of code. If missing, uses the text highlighted in RStudio's
 #'     source editor.
 #'
 #' @examples
+#' \dontrun{
 #' library(magrittr)
 #'
 #' debug_pipeline(
 #'     1:5 %>% rev() %>% {. * 2} %>% sample()
 #' )
+#' }
 #'
 #' @seealso [`browser`], [`magrittr::debug_pipe`]
 #' @export
