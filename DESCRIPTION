@@ -15,3 +15,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1.9000
+URL: https://github.com/alistaire47/pipecleaner
+BugReports: https://github.com/alistaire47/pipecleaner/issues
