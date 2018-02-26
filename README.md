@@ -85,7 +85,7 @@ debug_pipeline(
 #> debug: print(dot4 <- 1:5 %>% rev() %>% {
 #>     . * 2
 #> } %>% sample())
-#> [1] 10  6  2  8  4
+#> [1]  2  8  6  4 10
 #> exiting from: pipeline_function()
 ```
 
