@@ -1,0 +1,17 @@
+Type: Package
+Package: pipecleaner
+Title: Debug magrittr Pipelines
+Version: 0.0.1
+Authors@R: person("Edward", "Visel", email = "edward.visel@gmail.com", 
+                  role = c("aut", "cre"))
+Description: Run a magrittr pipeline element-by-element in the debugging browser.
+License: GPL-3
+Imports: 
+    rstudioapi
+Suggests: 
+    magrittr,
+    testthat
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1.9000

@@ -1,0 +1,4 @@
+Name: Debug pipeline in browser
+Description: Run a pipeline element-by-element in the debugging browser
+Binding: debug_pipeline
+Interactive: false
