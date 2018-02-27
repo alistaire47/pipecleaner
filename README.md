@@ -25,7 +25,7 @@ pipecleaner is not currently on CRAN, but can be installed with
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("pipecleaner")
+devtools::install_github("alistaire47/pipecleaner")
 ```
 
 ## Debugging pipelines
