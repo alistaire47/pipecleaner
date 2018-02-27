@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,15 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Run a pipeline step-by-step in the debugging browser — debug_pipeline" />
+
+<meta property="og:description" content="debug_pipeline creates a function out of the input pipeline with each line
+adding an additional step from the pipeline and calls the debugging browser
+on the function. Each line run prints to the console plus stores the result
+to a variable of the form dot[N], where [N] is the index of the element
+in the pipeline, so results can easily be replicated or adjusted in the
+debugging console." />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -119,8 +130,10 @@ browser, see <code>browser</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>magrittr</span>)
-
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:testthat’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    equals, is_less_than, not</span></div><div class='input'>
 <span class='fu'>debug_pipeline</span>(
     <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='fu'>rev</span>() <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>()
 )</div><div class='output co'>#&gt; debugging in: pipeline_function()
