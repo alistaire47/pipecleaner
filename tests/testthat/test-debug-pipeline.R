@@ -26,3 +26,8 @@ test_that("empty strings raise error", {
     expect_error(debug_pipeline(""),
                  "Input unavailable. Did you highlight a pipeline?")
 })
+
+test_that("missing input fails", {
+    expect_error(debug_pipeline(),
+                 "RStudio not running")
+})
