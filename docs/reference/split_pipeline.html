@@ -59,7 +59,7 @@ into a list of expressions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pipecleaner</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@ into a list of expressions.</p>
 i.e. like those returned by <code>quote</code> or <code><a href='http://www.rdocumentation.org/packages/rlang/topics/quotation'>rlang::expr</a></code>, <em>not</em> an object of
 class "expression" like those returned by <code>expression</code>. The latter can be
 turned into the former by subsetting, e.g. <code>expression(1:5 %&gt;% rev())[[1]]</code>.</p>
-<p><code>split_pipeline</code> will not split nested pipelines.</p>
+<p><code>split_pipeline</code> does not split nested pipelines.</p>
 <p>[[1]: R:[1</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -156,7 +156,6 @@ which does not handle assignment, but collects the particular pipes used.</p></d
 #&gt; [[4]]
 #&gt; sample(replace = TRUE)
 #&gt; </div><div class='input'>
-</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

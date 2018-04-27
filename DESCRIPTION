@@ -1,7 +1,7 @@
 Type: Package
 Package: pipecleaner
 Title: Debug magrittr Pipelines
-Version: 0.0.1.9000
+Version: 0.0.2
 Authors@R: person("Edward", "Visel", email = "edward.visel@gmail.com", 
                   role = c("aut", "cre"))
 Description: Run a magrittr pipeline element-by-element in the debugging browser.

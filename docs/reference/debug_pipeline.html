@@ -63,7 +63,7 @@ debugging console." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pipecleaner</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@ browser, see <code>browser</code>.</p>
 #&gt;     })
 #&gt;     print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))
 #&gt; }
-#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 &lt;- x &lt;- 1:5)
+#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#124: print(dot1 &lt;- x &lt;- 1:5)
 #&gt; [1] 1 2 3 4 5
 #&gt; debug: print(dot2 &lt;- dot1 %&gt;% rev)
 #&gt; [1] 5 4 3 2 1
@@ -181,7 +181,7 @@ browser, see <code>browser</code>.</p>
 #&gt;     print(dot2 &lt;- rev(dot1))
 #&gt;     print(dot3 &lt;- sample(dot2, replace = TRUE))
 #&gt; }
-#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 &lt;- x &lt;- 1:5)
+#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#124: print(dot1 &lt;- x &lt;- 1:5)
 #&gt; [1] 1 2 3 4 5
 #&gt; debug: print(dot2 &lt;- rev(dot1))
 #&gt; [1] 5 4 3 2 1
