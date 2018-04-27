@@ -1,3 +1,15 @@
+split_pipes <- function(pipeline){
+    if (inherits(pipeline, c("call", "<-"))) {
+        if (rlang::call_name(pipeline) == "%>%") {
+            c(split_pipes(pipeline[[2]]), pipeline[[3]])
+        } else {
+            x <- split_pipes(pipeline[[3]])
+            c(rlang::call_modify(pipeline[1:2], x[[1]]), x[-1])
+        }
+    } else {pipeline}
+}
+
+
 #' Run a pipeline step-by-step in the debugging browser
 #'
 #' `debug_pipeline` creates a function out of the input pipeline with each line
@@ -33,20 +45,31 @@ debug_pipeline <- function(pipeline){
     this_call <- match.call()
     if (missing(pipeline)) {
         pipeline <- rstudioapi::getSourceEditorContext()$selection[[1]]$text
+        pipeline <- rlang::parse_expr(pipeline)
     } else if (is.language(this_call[[2]])) {
-        pipeline <- paste(trimws(deparse(this_call[[2]])), collapse = "")
+        pipeline <- this_call[[2]]
+    } else {
+        stop("Input unavailable. Did you highlight a pipeline?")
     }
-    if (nchar(pipeline) == 0) stop("Input unavailable. Did you highlight a pipeline?")
 
-    pipe_parts <- strsplit(pipeline, "%>%[[:space:]]*")[[1]]
-    pipe_parts <- Reduce(function(...) paste(..., sep = "%>%\n\t\t"),
+    pipe_parts <- split_pipes(pipeline)
+    pipe_lines <- Reduce(function(...) rlang::expr(!!..1 %>% !!..2),
                          pipe_parts,
                          accumulate = TRUE)
-    pipe_lines <- paste("\tprint(dot", seq_along(pipe_parts), " <- ",
-                        pipe_parts, ")", sep = "", collapse = "\n")
+    pipe_lines <- Map(
+        function(line, i){
+            # use base because R CMD check complains about expr with `<-`
+            substitute(print(nm <- ln),
+                       list(nm = as.name(paste0('dot', i)),
+                            ln = line))
+        },
+        pipe_lines,
+        seq_along(pipe_lines)
+    )
 
-    pipeline_function <- eval(
-        parse(text = paste("function(){", pipe_lines, "}", sep = "\n"))
+    pipeline_function <- rlang::new_function(
+        args = NULL,
+        body = rlang::expr({!!!pipe_lines})
     )
     debugonce(pipeline_function)
     pipeline_function()
