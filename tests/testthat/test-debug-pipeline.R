@@ -8,6 +8,13 @@ debug_text <- function(f){
            pos = 1)
 }
 
+test_that("pipelines are split", {
+    expect_equal(split_pipeline(quote(1:5 %>% rev())),
+                 alist(1:5, rev()))
+    expect_equal(split_pipeline(quote(x <- 1:5 %>% rev())),
+                 alist(x <- 1:5, rev()))
+})
+
 test_that("pipelines get debugged", {
     with_mock(
         debugonce = debug_text,
@@ -16,7 +23,7 @@ test_that("pipelines get debugged", {
                 capture.output(debug_pipeline(1:5 %>% rev()))
                 pipeline_function()
             },
-            "print(dot2 <- 1:5 %>% rev())",
+            "print(dot2 <- dot1 %>% rev())",
             fixed = TRUE
         )
     )

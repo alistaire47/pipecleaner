@@ -13,7 +13,7 @@ source editor.}
 }
 \description{
 \code{debug_pipeline} creates a function out of the input pipeline with each line
-adding an additional step from the pipeline and calls the debugging browser
+running an additional step from the pipeline and calls the debugging browser
 on the function. Each line run prints to the console plus stores the result
 to a variable of the form \code{dot[N]}, where \code{[N]} is the index of the element
 in the pipeline, so results can easily be replicated or adjusted in the
@@ -32,7 +32,7 @@ browser, see \code{\link{browser}}.
 library(magrittr)
 
 debug_pipeline(
-    1:5 \%>\% rev() \%>\% {. * 2} \%>\% sample()
+    x <- 1:5 \%>\% rev \%>\% {. * 2} \%>\% sample(replace = TRUE)
 )
 }
 

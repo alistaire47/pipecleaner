@@ -66,25 +66,21 @@ debug_pipeline(
 #> debugging in: pipeline_function()
 #> debug: {
 #>     print(dot1 <- 1:5)
-#>     print(dot2 <- 1:5 %>% rev())
-#>     print(dot3 <- 1:5 %>% rev() %>% {
+#>     print(dot2 <- dot1 %>% rev())
+#>     print(dot3 <- dot2 %>% {
 #>         . * 2
 #>     })
-#>     print(dot4 <- 1:5 %>% rev() %>% {
-#>         . * 2
-#>     } %>% sample())
+#>     print(dot4 <- dot3 %>% sample())
 #> }
-#> debug: print(dot1 <- 1:5)
+#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#97: print(dot1 <- 1:5)
 #> [1] 1 2 3 4 5
-#> debug: print(dot2 <- 1:5 %>% rev())
+#> debug: print(dot2 <- dot1 %>% rev())
 #> [1] 5 4 3 2 1
-#> debug: print(dot3 <- 1:5 %>% rev() %>% {
+#> debug: print(dot3 <- dot2 %>% {
 #>     . * 2
 #> })
 #> [1] 10  8  6  4  2
-#> debug: print(dot4 <- 1:5 %>% rev() %>% {
-#>     . * 2
-#> } %>% sample())
+#> debug: print(dot4 <- dot3 %>% sample())
 #> [1]  2  8  6  4 10
 #> exiting from: pipeline_function()
 ```
@@ -95,10 +91,10 @@ pipecleaner should successfully debug most pipelines. However, due to
 its structure, it does have known limitations:
 
   - It can only handle the `%>%` pipe, not more exotic pipes like `%$%`.
-    For the moment, this is unlikely to change, as accommodating varying
-    pipes would require a more complicated approach.
-  - It cannot handle nested pipelines, e.g. piping within
-    `dplyr::mutate`. This may be rectified eventually.
+    For the moment, this is unlikely to change unless there is
+    significant demand.
+  - It ignores nested pipelines—e.g. piping within an anonymous function
+    in `purrr::map`—treating the whole call as one step.
 
 ## Related
 

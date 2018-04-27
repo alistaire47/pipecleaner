@@ -78,10 +78,9 @@ pipecleaner should successfully debug most pipelines. However, due to its
 structure, it does have known limitations:
 
 - It can only handle the `%>%` pipe, not more exotic pipes like `%$%`. For the 
-    moment, this is unlikely to change, as accommodating varying pipes would 
-    require a more complicated approach.
-- It cannot handle nested pipelines, e.g. piping within `dplyr::mutate`. This 
-    may be rectified eventually.
+    moment, this is unlikely to change unless there is significant demand.
+- It ignores nested pipelines—e.g. piping within an anonymous function in 
+    `purrr::map`—treating the whole call as one step. 
     
 ## Related
 
