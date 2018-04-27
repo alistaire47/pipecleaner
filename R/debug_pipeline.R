@@ -8,7 +8,7 @@
 #' class "expression" like those returned by [`expression`]. The latter can be
 #' turned into the former by subsetting, e.g. `expression(1:5 %>% rev())[[1]]`.
 #'
-#' `split_pipeline` will not split nested pipelines.
+#' `split_pipeline` does not split nested pipelines.
 #'
 #' @param pipeline An unevaluated expression of a pipeline to be split.
 #'
@@ -54,9 +54,13 @@ split_pipeline <- function(pipeline){
 #' For a full explanation of the special commands available in the debugging
 #' browser, see [`browser`].
 #'
-#' @param pipeline A pipeline to debug step-by-step Can be an expression or a
-#'     string of code. If missing, uses the text highlighted in RStudio's
-#'     source editor.
+#' @param pipeline A pipeline to debug step-by-step Can be an unquoted
+#'     expression or a character vector of code. If missing, uses the text
+#'     highlighted in RStudio's source editor.
+#' @param data Determines whether data is piped in (`data %>%
+#'     function(parameter)`) or inserted as the first parameter of each call
+#'     (`function(data, parameter)`). Piping is necessary to make dot notation
+#'     work; inserting makes stepping into calls easier.
 #'
 #' @examples
 #' \dontrun{
@@ -65,14 +69,24 @@ split_pipeline <- function(pipeline){
 #' debug_pipeline(
 #'     x <- 1:5 %>% rev %>% {. * 2} %>% sample(replace = TRUE)
 #' )
+#'
+#' debug_pipeline(
+#'     x <- 1:5 %>% rev() %>% sample(replace = TRUE),
+#'     data = "insert"
+#' )
 #' }
 #'
 #' @seealso [`browser`], [`magrittr::debug_pipe`]
 #' @export
-debug_pipeline <- function(pipeline){
+debug_pipeline <- function(pipeline, data = c("pipe", "insert")){
     this_call <- match.call()
+    data = match.arg(data)
+
     if (missing(pipeline)) {
         pipeline <- rstudioapi::getSourceEditorContext()$selection[[1]]$text
+        pipeline <- rlang::parse_expr(pipeline)
+    } else if (is.character(pipeline) && nchar(pipeline) > 0) {
+        pipeline <- paste(pipeline, collapse = "")
         pipeline <- rlang::parse_expr(pipeline)
     } else if (is.language(this_call[[2]])) {
         pipeline <- this_call[[2]]
@@ -82,11 +96,24 @@ debug_pipeline <- function(pipeline){
 
     pipe_parts <- split_pipeline(pipeline)
     pipe_parts[[1]] <- rlang::expr(print(dot1 <- !!pipe_parts[[1]]))
-    pipe_parts[-1] <- Map(function(line, i){
-        substitute(print(nm1 <- nm0 %>% ln),
-                   list(nm0 = as.name(paste0("dot", i)),
-                        nm1 = as.name(paste0("dot", i + 1)),
-                        ln = line))
+    pipe_parts[-1] <- Map(
+        function(line, i){
+            if (data == "insert") {
+                name0 <- as.name(paste0("dot", i))
+                name1 <- as.name(paste0("dot", i + 1))
+                line <- rlang::expr(rlang::UQ(line[[1]])(    # function name
+                    !!name0,    # data piped in
+                    !!!rlang::call_args(line))    # function parameters
+                )
+                substitute(print(nm1 <- ln),
+                           list(nm1 = name1,
+                                ln = line))
+            } else {
+                substitute(print(nm1 <- nm0 %>% ln),
+                           list(nm0 = as.name(paste0("dot", i)),
+                                nm1 = as.name(paste0("dot", i + 1)),
+                                ln = line))
+            }
         },
         line = pipe_parts[-1],
         i = seq_along(pipe_parts[-1])
@@ -102,3 +129,9 @@ debug_pipeline <- function(pipeline){
     # so browser exits fully when called by add-in
     if (rstudioapi::isAvailable()) rstudioapi::sendToConsole("")
 }
+
+debug_pipeline_insert = debug_pipeline
+rlang::fn_fmls(debug_pipeline_insert)$data <- "insert"
+
+debug_pipeline_pipe = debug_pipeline
+rlang::fn_fmls(debug_pipeline_pipe)$data <- "pipe"

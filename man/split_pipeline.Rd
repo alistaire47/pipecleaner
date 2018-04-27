@@ -22,7 +22,7 @@ i.e. like those returned by \code{\link{quote}} or \code{\link[rlang:expr]{rlang
 class "expression" like those returned by \code{\link{expression}}. The latter can be
 turned into the former by subsetting, e.g. \code{expression(1:5 \%>\% rev())[[1]]}.
 
-\code{split_pipeline} will not split nested pipelines.
+\code{split_pipeline} does not split nested pipelines.
 
 [[1]: R:[1
 }

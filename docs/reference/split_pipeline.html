@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run a pipeline step-by-step in the debugging browser — debug_pipeline • pipecleaner</title>
+<title>Split a pipeline expression into a list of expressions — split_pipeline • pipecleaner</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,14 +28,10 @@
 
 
 
-<meta property="og:title" content="Run a pipeline step-by-step in the debugging browser — debug_pipeline" />
+<meta property="og:title" content="Split a pipeline expression into a list of expressions — split_pipeline" />
 
-<meta property="og:description" content="debug_pipeline creates a function out of the input pipeline with each line
-running an additional step from the pipeline and calls the debugging browser
-on the function. Each line run prints to the console plus stores the result
-to a variable of the form dot[N], where [N] is the index of the element
-in the pipeline, so results can easily be replicated or adjusted in the
-debugging console." />
+<meta property="og:description" content="split_pipeline takes an unevaluated expression of a pipeline and splits it
+into a list of expressions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -99,95 +95,68 @@ debugging console." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run a pipeline step-by-step in the debugging browser</h1>
+    <h1>Split a pipeline expression into a list of expressions</h1>
     <small class="dont-index">Source: <a href='https://github.com/alistaire47/pipecleaner/blob/master/R/debug_pipeline.R'><code>R/debug_pipeline.R</code></a></small>
-    <div class="hidden name"><code>debug_pipeline.Rd</code></div>
+    <div class="hidden name"><code>split_pipeline.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>debug_pipeline</code> creates a function out of the input pipeline with each line
-running an additional step from the pipeline and calls the debugging browser
-on the function. Each line run prints to the console plus stores the result
-to a variable of the form <code>dot[N]</code>, where <code>[N]</code> is the index of the element
-in the pipeline, so results can easily be replicated or adjusted in the
-debugging console.</p>
+    <p><code>split_pipeline</code> takes an unevaluated expression of a pipeline and splits it
+into a list of expressions.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>debug_pipeline</span>(<span class='no'>pipeline</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"pipe"</span>, <span class='st'>"insert"</span>))</pre>
+    <pre class="usage"><span class='fu'>split_pipeline</span>(<span class='no'>pipeline</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pipeline</th>
-      <td><p>A pipeline to debug step-by-step Can be an unquoted
-expression or a character vector of code. If missing, uses the text
-highlighted in RStudio's source editor.</p></td>
-    </tr>
-    <tr>
-      <th>data</th>
-      <td><p>Determines whether data is piped in (<code>data %&gt;% function(parameter)</code>) or inserted as the first parameter of each call
-(<code>function(data, parameter)</code>). Piping is necessary to make dot notation
-work; inserting makes stepping into calls easier.</p></td>
+      <td><p>An unevaluated expression of a pipeline to be split.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list of unevaluated expressions of each element piped together.</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>debug_pipeline</code> can also be called interactively in RStudio via the "Debug
-pipeline in browser" add-in after highlighting the pipeline to debug in the
-source editor.</p>
-<p>For a full explanation of the special commands available in the debugging
-browser, see <code>browser</code>.</p>
+    <p>Here "expression" is use colloquially to refer to a bare language object,
+i.e. like those returned by <code>quote</code> or <code><a href='http://www.rdocumentation.org/packages/rlang/topics/quotation'>rlang::expr</a></code>, <em>not</em> an object of
+class "expression" like those returned by <code>expression</code>. The latter can be
+turned into the former by subsetting, e.g. <code>expression(1:5 %&gt;% rev())[[1]]</code>.</p>
+<p><code>split_pipeline</code> will not split nested pipelines.</p>
+<p>[[1]: R:[1</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>browser</code>, <code><a href='http://www.rdocumentation.org/packages/magrittr/topics/debug_pipe'>magrittr::debug_pipe</a></code></p></div>
+    <div class='dont-index'><p>The unexported <a href='https://github.com/tidyverse/magrittr/blob/master/R/split_chain.R'><code>magrittr:::split_chain</code></a>,
+which does not handle assignment, but collects the particular pipes used.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>magrittr</span>)
 
-<span class='fu'>debug_pipeline</span>(
-    <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-)</div><div class='output co'>#&gt; debugging in: pipeline_function()
-#&gt; debug: {
-#&gt;     print(dot1 &lt;- x &lt;- 1:5)
-#&gt;     print(dot2 &lt;- dot1 %&gt;% rev)
-#&gt;     print(dot3 &lt;- dot2 %&gt;% {
-#&gt;         . * 2
-#&gt;     })
-#&gt;     print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))
-#&gt; }
-#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 &lt;- x &lt;- 1:5)
-#&gt; [1] 1 2 3 4 5
-#&gt; debug: print(dot2 &lt;- dot1 %&gt;% rev)
-#&gt; [1] 5 4 3 2 1
-#&gt; debug: print(dot3 &lt;- dot2 %&gt;% {
+<span class='fu'>split_pipeline</span>(
+    <span class='fu'>quote</span>(<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+)</div><div class='output co'>#&gt; [[1]]
+#&gt; x &lt;- 1:5
+#&gt; 
+#&gt; [[2]]
+#&gt; rev
+#&gt; 
+#&gt; [[3]]
+#&gt; {
 #&gt;     . * 2
-#&gt; })
-#&gt; [1] 10  8  6  4  2
-#&gt; debug: print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))
-#&gt; [1] 6 6 8 4 4
-#&gt; exiting from: pipeline_function()</div><div class='input'>
-<span class='fu'>debug_pipeline</span>(
-    <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='fu'>rev</span>() <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-    <span class='kw'>data</span> <span class='kw'>=</span> <span class='st'>"insert"</span>
-)</div><div class='output co'>#&gt; debugging in: pipeline_function()
-#&gt; debug: {
-#&gt;     print(dot1 &lt;- x &lt;- 1:5)
-#&gt;     print(dot2 &lt;- rev(dot1))
-#&gt;     print(dot3 &lt;- sample(dot2, replace = TRUE))
 #&gt; }
-#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 &lt;- x &lt;- 1:5)
-#&gt; [1] 1 2 3 4 5
-#&gt; debug: print(dot2 &lt;- rev(dot1))
-#&gt; [1] 5 4 3 2 1
-#&gt; debug: print(dot3 &lt;- sample(dot2, replace = TRUE))
-#&gt; [1] 5 3 5 4 1
-#&gt; exiting from: pipeline_function()</div><div class='input'>
+#&gt; 
+#&gt; [[4]]
+#&gt; sample(replace = TRUE)
+#&gt; </div><div class='input'>
+</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -195,6 +164,8 @@ browser, see <code>browser</code>.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>

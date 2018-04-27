@@ -4,12 +4,16 @@
 \alias{debug_pipeline}
 \title{Run a pipeline step-by-step in the debugging browser}
 \usage{
-debug_pipeline(pipeline)
+debug_pipeline(pipeline, data = c("pipe", "insert"))
 }
 \arguments{
-\item{pipeline}{A pipeline to debug step-by-step Can be an expression or a
-string of code. If missing, uses the text highlighted in RStudio's
-source editor.}
+\item{pipeline}{A pipeline to debug step-by-step Can be an unquoted
+expression or a character vector of code. If missing, uses the text
+highlighted in RStudio's source editor.}
+
+\item{data}{Determines whether data is piped in (\code{data \%>\% function(parameter)}) or inserted as the first parameter of each call
+(\code{function(data, parameter)}). Piping is necessary to make dot notation
+work; inserting makes stepping into calls easier.}
 }
 \description{
 \code{debug_pipeline} creates a function out of the input pipeline with each line
@@ -33,6 +37,11 @@ library(magrittr)
 
 debug_pipeline(
     x <- 1:5 \%>\% rev \%>\% {. * 2} \%>\% sample(replace = TRUE)
+)
+
+debug_pipeline(
+    x <- 1:5 \%>\% rev() \%>\% sample(replace = TRUE),
+    data = "insert"
 )
 }
 

@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -27,8 +27,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">pipecleaner</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">pipecleaner</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.1.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -58,12 +62,11 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     
 
     
     
-<div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="pipecleaner" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
@@ -80,7 +83,7 @@
 <div id="debugging-pipelines" class="section level2">
 <h2 class="hasAnchor">
 <a href="#debugging-pipelines" class="anchor"></a>Debugging pipelines</h2>
-<p>To debug a pipeline, call <code>debug_pipeline</code> on the raw code or a character string of the code. If no input is supplied and it is called from <a href="https://www.rstudio.com/products/RStudio/">RStudio</a>, it will use whatever code is highlighed in the source editor as input.</p>
+<p>To debug a pipeline, call <code>debug_pipeline</code> on the raw code or a character vector of code. If no input is supplied and it is called from <a href="https://www.rstudio.com/products/RStudio/">RStudio</a>, it will use whatever code is highlighed in the source editor as input.</p>
 <p><code>debug_pipeline</code> can also be called via an <a href="https://rstudio.github.io/rstudioaddins/">RStudio add-in</a> by highlighting the pipeline to debug and then selecting “Debug pipeline in browser” from the “Addins” menu.</p>
 <p>Once called, <code>debug_pipeline</code> will reassemble the pipeline into a function that can be debugged in the browser and call the debugger. Each line adds another call from the pipeline and prints and the output so the user can see the status of the data passed through the pipeline by stepping through the function.</p>
 <p>The data is also stored to a variable called <code>dot[N]</code> in each line, where <code>[N]</code> is the index of the call, making it easy to compare input and output data of a step in the pipeline and try out new code formulations in the console.</p>
@@ -90,42 +93,59 @@
 <a class="sourceLine" id="cb2-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw"><a href="reference/debug_pipeline.html">debug_pipeline</a></span>(</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">        </span><span class="kw">rev</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">        </span>rev <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">        </span>{. <span class="op">*</span><span class="st"> </span><span class="dv">2</span>} <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">        </span><span class="kw">sample</span>()</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">        </span><span class="kw">sample</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb2-9" data-line-number="9">)</a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; debugging in: pipeline_function()</span></a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; debug: {</span></a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;     print(dot1 &lt;- 1:5)</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;     print(dot2 &lt;- 1:5 %&gt;% rev())</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;     print(dot3 &lt;- 1:5 %&gt;% rev() %&gt;% {</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;     print(dot2 &lt;- dot1 %&gt;% rev)</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;     print(dot3 &lt;- dot2 %&gt;% {</span></a>
 <a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;         . * 2</span></a>
 <a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;     })</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;     print(dot4 &lt;- 1:5 %&gt;% rev() %&gt;% {</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;         . * 2</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;     } %&gt;% sample())</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; debug: print(dot1 &lt;- 1:5)</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; [1] 1 2 3 4 5</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; debug: print(dot2 &lt;- 1:5 %&gt;% rev())</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; [1] 5 4 3 2 1</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; debug: print(dot3 &lt;- 1:5 %&gt;% rev() %&gt;% {</span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt;     . * 2</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; })</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; [1] 10  8  6  4  2</span></a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt; debug: print(dot4 &lt;- 1:5 %&gt;% rev() %&gt;% {</span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co">#&gt;     . * 2</span></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">#&gt; } %&gt;% sample())</span></a>
-<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="co">#&gt; [1]  2  8  6  4 10</span></a>
-<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="co">#&gt; exiting from: pipeline_function()</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;     print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; }</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 &lt;- 1:5)</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; [1] 1 2 3 4 5</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; debug: print(dot2 &lt;- dot1 %&gt;% rev)</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; [1] 5 4 3 2 1</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; debug: print(dot3 &lt;- dot2 %&gt;% {</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;     . * 2</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; })</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; [1] 10  8  6  4  2</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; debug: print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))</span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; [1] 4 8 6 6 2</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt; exiting from: pipeline_function()</span></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="kw"><a href="reference/debug_pipeline.html">debug_pipeline</a></span>(</a>
+<a class="sourceLine" id="cb2-32" data-line-number="32">    <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="st">        </span><span class="kw">rev</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="st">        </span><span class="kw">sample</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>), </a>
+<a class="sourceLine" id="cb2-35" data-line-number="35">    <span class="dt">data =</span> <span class="st">"insert"</span>    <span class="co"># insert incoming data as first parameter of each call</span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36">)</a>
+<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="co">#&gt; debugging in: pipeline_function()</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="co">#&gt; debug: {</span></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="co">#&gt;     print(dot1 &lt;- 1:5)</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="co">#&gt;     print(dot2 &lt;- rev(dot1))</span></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"><span class="co">#&gt;     print(dot3 &lt;- sample(dot2, replace = TRUE))</span></a>
+<a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co">#&gt; }</span></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co">#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 &lt;- 1:5)</span></a>
+<a class="sourceLine" id="cb2-44" data-line-number="44"><span class="co">#&gt; [1] 1 2 3 4 5</span></a>
+<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="co">#&gt; debug: print(dot2 &lt;- rev(dot1))</span></a>
+<a class="sourceLine" id="cb2-46" data-line-number="46"><span class="co">#&gt; [1] 5 4 3 2 1</span></a>
+<a class="sourceLine" id="cb2-47" data-line-number="47"><span class="co">#&gt; debug: print(dot3 &lt;- sample(dot2, replace = TRUE))</span></a>
+<a class="sourceLine" id="cb2-48" data-line-number="48"><span class="co">#&gt; [1] 1 3 5 5 3</span></a>
+<a class="sourceLine" id="cb2-49" data-line-number="49"><span class="co">#&gt; exiting from: pipeline_function()</span></a></code></pre></div>
 </div>
 <div id="limitations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#limitations" class="anchor"></a>Limitations</h2>
 <p>pipecleaner should successfully debug most pipelines. However, due to its structure, it does have known limitations:</p>
 <ul>
-<li>It can only handle the <code>%&gt;%</code> pipe, not more exotic pipes like <code>%$%</code>. For the moment, this is unlikely to change, as accommodating varying pipes would require a more complicated approach.</li>
-<li>It cannot handle nested pipelines, e.g. piping within <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code>. This may be rectified eventually.</li>
+<li>It can only handle the <code>%&gt;%</code> pipe, not more exotic pipes like <code>%$%</code>. For the moment, this is unlikely to change absent significant demand.</li>
+<li>It ignores nested pipelines—e.g. piping within an anonymous function in <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map</a></code>—treating the whole call as one step.</li>
+<li>With <code>data = "insert"</code>, data is only inserted as the first parameter, not everywhere denoted by a <code>.</code> and is sensitive to parentheses on parameterless calls. The <code>data = "pipe"</code> option handles these complications naturally, but is harder to step into within the debugger.</li>
 </ul>
 </div>
 <div id="related" class="section level2">
@@ -138,24 +158,33 @@
 </ul>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
+    <div class="links">
+<h2>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/alistaire47/pipecleaner">https://​github.com/​alistaire47/​pipecleaner</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/alistaire47/pipecleaner/issues">https://​github.com/​alistaire47/​pipecleaner/​issues</a>
 </li>
 </ul>
+</div>
+<div class="license">
 <h2>License</h2>
-<p><a href="LICENSE.html">Full license</a><br><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a><small></small></small></p>
+<ul class="list-unstyled">
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
+</ul>
+</div>
+<div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Edward Visel <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
+</div>
+
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/alistaire47/pipecleaner"><img src="https://travis-ci.org/alistaire47/pipecleaner.svg?branch=master" alt="Travis build status"></a></li>
@@ -164,6 +193,7 @@
 <li><a href="https://cran.r-project.org/package=pipecleaner"><img src="https://www.r-pkg.org/badges/version/pipecleaner" alt="CRAN status"></a></li>
 <li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="lifecycle"></a></li>
 </ul>
+</div>
 </div>
 
 </div>
@@ -179,6 +209,8 @@
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

@@ -31,8 +31,8 @@ devtools::install_github("alistaire47/pipecleaner")
 ## Debugging pipelines
 
 To debug a pipeline, call `debug_pipeline` on the raw code or a
-character string of the code. If no input is supplied and it is called
-from [RStudio](https://www.rstudio.com/products/RStudio/), it will use
+character vector of code. If no input is supplied and it is called from
+[RStudio](https://www.rstudio.com/products/RStudio/), it will use
 whatever code is highlighed in the source editor as input.
 
 `debug_pipeline` can also be called via an [RStudio
@@ -59,29 +59,49 @@ library(pipecleaner)
 
 debug_pipeline(
     1:5 %>% 
-        rev() %>% 
+        rev %>% 
         {. * 2} %>% 
-        sample()
+        sample(replace = TRUE)
 )
 #> debugging in: pipeline_function()
 #> debug: {
 #>     print(dot1 <- 1:5)
-#>     print(dot2 <- dot1 %>% rev())
+#>     print(dot2 <- dot1 %>% rev)
 #>     print(dot3 <- dot2 %>% {
 #>         . * 2
 #>     })
-#>     print(dot4 <- dot3 %>% sample())
+#>     print(dot4 <- dot3 %>% sample(replace = TRUE))
 #> }
-#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#97: print(dot1 <- 1:5)
+#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 <- 1:5)
 #> [1] 1 2 3 4 5
-#> debug: print(dot2 <- dot1 %>% rev())
+#> debug: print(dot2 <- dot1 %>% rev)
 #> [1] 5 4 3 2 1
 #> debug: print(dot3 <- dot2 %>% {
 #>     . * 2
 #> })
 #> [1] 10  8  6  4  2
-#> debug: print(dot4 <- dot3 %>% sample())
-#> [1]  2  8  6  4 10
+#> debug: print(dot4 <- dot3 %>% sample(replace = TRUE))
+#> [1] 4 8 6 6 2
+#> exiting from: pipeline_function()
+
+debug_pipeline(
+    1:5 %>% 
+        rev() %>% 
+        sample(replace = TRUE), 
+    data = "insert"    # insert incoming data as first parameter of each call
+)
+#> debugging in: pipeline_function()
+#> debug: {
+#>     print(dot1 <- 1:5)
+#>     print(dot2 <- rev(dot1))
+#>     print(dot3 <- sample(dot2, replace = TRUE))
+#> }
+#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 <- 1:5)
+#> [1] 1 2 3 4 5
+#> debug: print(dot2 <- rev(dot1))
+#> [1] 5 4 3 2 1
+#> debug: print(dot3 <- sample(dot2, replace = TRUE))
+#> [1] 1 3 5 5 3
 #> exiting from: pipeline_function()
 ```
 
@@ -91,10 +111,15 @@ pipecleaner should successfully debug most pipelines. However, due to
 its structure, it does have known limitations:
 
   - It can only handle the `%>%` pipe, not more exotic pipes like `%$%`.
-    For the moment, this is unlikely to change unless there is
-    significant demand.
+    For the moment, this is unlikely to change absent significant
+    demand.
   - It ignores nested pipelines—e.g. piping within an anonymous function
     in `purrr::map`—treating the whole call as one step.
+  - With `data = "insert"`, data is only inserted as the first
+    parameter, not everywhere denoted by a `.` and is sensitive to
+    parentheses on parameterless calls. The `data = "pipe"` option
+    handles these complications naturally, but is harder to step into
+    within the debugger.
 
 ## Related
 
