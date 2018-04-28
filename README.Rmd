@@ -39,7 +39,7 @@ devtools::install_github("alistaire47/pipecleaner")
 ## Debugging pipelines
 
 To debug a pipeline, call `debug_pipeline` on the raw code or a character 
-string of the code. If no input is supplied and it is called 
+vector of code. If no input is supplied and it is called 
 from [RStudio](https://www.rstudio.com/products/RStudio/), it will use whatever 
 code is highlighed in the source editor as input.
 
@@ -66,9 +66,16 @@ library(pipecleaner)
 
 debug_pipeline(
     1:5 %>% 
-        rev() %>% 
+        rev %>% 
         {. * 2} %>% 
-        sample()
+        sample(replace = TRUE)
+)
+
+debug_pipeline(
+    1:5 %>% 
+        rev() %>% 
+        sample(replace = TRUE), 
+    data = "insert"    # insert incoming data as first parameter of each call
 )
 ```
 
@@ -78,10 +85,13 @@ pipecleaner should successfully debug most pipelines. However, due to its
 structure, it does have known limitations:
 
 - It can only handle the `%>%` pipe, not more exotic pipes like `%$%`. For the 
-    moment, this is unlikely to change, as accommodating varying pipes would 
-    require a more complicated approach.
-- It cannot handle nested pipelines, e.g. piping within `dplyr::mutate`. This 
-    may be rectified eventually.
+    moment, this is unlikely to change absent significant demand.
+- It ignores nested pipelines—e.g. piping within an anonymous function in 
+    `purrr::map`—treating the whole call as one step. 
+- With `data = "insert"`, data is only inserted as the first parameter, not 
+    everywhere denoted by a `.` and is sensitive to parentheses on 
+    parameterless calls. The `data = "pipe"` option handles these complications 
+    naturally, but is harder to step into within the debugger.
     
 ## Related
 
