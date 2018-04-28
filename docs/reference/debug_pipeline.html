@@ -78,6 +78,9 @@ debugging console." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -148,46 +151,18 @@ browser, see <code>browser</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>magrittr</span>)
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>library</span>(<span class='no'>magrittr</span>)
 
 <span class='fu'>debug_pipeline</span>(
     <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-)</div><div class='output co'>#&gt; debugging in: pipeline_function()
-#&gt; debug: {
-#&gt;     print(dot1 &lt;- x &lt;- 1:5)
-#&gt;     print(dot2 &lt;- dot1 %&gt;% rev)
-#&gt;     print(dot3 &lt;- dot2 %&gt;% {
-#&gt;         . * 2
-#&gt;     })
-#&gt;     print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))
-#&gt; }
-#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#124: print(dot1 &lt;- x &lt;- 1:5)
-#&gt; [1] 1 2 3 4 5
-#&gt; debug: print(dot2 &lt;- dot1 %&gt;% rev)
-#&gt; [1] 5 4 3 2 1
-#&gt; debug: print(dot3 &lt;- dot2 %&gt;% {
-#&gt;     . * 2
-#&gt; })
-#&gt; [1] 10  8  6  4  2
-#&gt; debug: print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))
-#&gt; [1] 6 6 8 4 4
-#&gt; exiting from: pipeline_function()</div><div class='input'>
+)
+
 <span class='fu'>debug_pipeline</span>(
     <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='fu'>rev</span>() <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
     <span class='kw'>data</span> <span class='kw'>=</span> <span class='st'>"insert"</span>
-)</div><div class='output co'>#&gt; debugging in: pipeline_function()
-#&gt; debug: {
-#&gt;     print(dot1 &lt;- x &lt;- 1:5)
-#&gt;     print(dot2 &lt;- rev(dot1))
-#&gt;     print(dot3 &lt;- sample(dot2, replace = TRUE))
-#&gt; }
-#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#124: print(dot1 &lt;- x &lt;- 1:5)
-#&gt; [1] 1 2 3 4 5
-#&gt; debug: print(dot2 &lt;- rev(dot1))
-#&gt; [1] 5 4 3 2 1
-#&gt; debug: print(dot3 &lt;- sample(dot2, replace = TRUE))
-#&gt; [1] 5 3 5 4 1
-#&gt; exiting from: pipeline_function()</div><div class='input'>
+)
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
