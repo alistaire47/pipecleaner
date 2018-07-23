@@ -8,8 +8,8 @@
 <title>Debug magrittr Pipelines • pipecleaner</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Debug magrittr Pipelines">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Debug magrittr Pipelines">
 <meta property="og:description" content="Run a magrittr pipeline element-by-element in the debugging browser.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pipecleaner</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2.9000</span>
       </span>
     </div>
 
@@ -95,51 +95,68 @@
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(pipecleaner)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw"><a href="reference/debug_pipeline.html">debug_pipeline</a></span>(</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">        </span>rev <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">        </span>{. <span class="op">*</span><span class="st"> </span><span class="dv">2</span>} <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">        </span><span class="kw">sample</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb2-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; debugging in: pipeline_function()</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; debug: {</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;     print(dot1 &lt;- 1:5)</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;     print(dot2 &lt;- dot1 %&gt;% rev)</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;     print(dot3 &lt;- dot2 %&gt;% {</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;         . * 2</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;     })</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;     print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#124: print(dot1 &lt;- 1:5)</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; [1] 1 2 3 4 5</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; debug: print(dot2 &lt;- dot1 %&gt;% rev)</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; [1] 5 4 3 2 1</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; debug: print(dot3 &lt;- dot2 %&gt;% {</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;     . * 2</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; })</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; dot1 &lt;- rev(1:5)</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; dot2 &lt;- {dot1 * 2}</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; x &lt;- sample(dot2, replace = TRUE)debugging in: pipeline_function()</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; debug: {</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;     print(dot1 &lt;- rev(1:5))</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;     print(dot2 &lt;- {</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;         dot1 * 2</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;     })</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;     print(x &lt;- sample(dot2, replace = TRUE))</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; }</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#270: print(dot1 &lt;- rev(1:5))</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; [1] 5 4 3 2 1</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; debug: print(dot2 &lt;- {</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;     dot1 * 2</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; })</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; debug: dot1 * 2</span></a>
 <a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; [1] 10  8  6  4  2</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; debug: print(dot4 &lt;- dot3 %&gt;% sample(replace = TRUE))</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; [1] 4 8 6 6 2</span></a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt; exiting from: pipeline_function()</span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="kw"><a href="reference/debug_pipeline.html">debug_pipeline</a></span>(</a>
-<a class="sourceLine" id="cb2-32" data-line-number="32">    <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="st">        </span><span class="kw">rev</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="st">        </span><span class="kw">sample</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>), </a>
-<a class="sourceLine" id="cb2-35" data-line-number="35">    <span class="dt">data =</span> <span class="st">"insert"</span>    <span class="co"># insert incoming data as first parameter of each call</span></a>
-<a class="sourceLine" id="cb2-36" data-line-number="36">)</a>
-<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="co">#&gt; debugging in: pipeline_function()</span></a>
-<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="co">#&gt; debug: {</span></a>
-<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="co">#&gt;     print(dot1 &lt;- 1:5)</span></a>
-<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="co">#&gt;     print(dot2 &lt;- rev(dot1))</span></a>
-<a class="sourceLine" id="cb2-41" data-line-number="41"><span class="co">#&gt;     print(dot3 &lt;- sample(dot2, replace = TRUE))</span></a>
-<a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co">#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#124: print(dot1 &lt;- 1:5)</span></a>
-<a class="sourceLine" id="cb2-44" data-line-number="44"><span class="co">#&gt; [1] 1 2 3 4 5</span></a>
-<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="co">#&gt; debug: print(dot2 &lt;- rev(dot1))</span></a>
-<a class="sourceLine" id="cb2-46" data-line-number="46"><span class="co">#&gt; [1] 5 4 3 2 1</span></a>
-<a class="sourceLine" id="cb2-47" data-line-number="47"><span class="co">#&gt; debug: print(dot3 &lt;- sample(dot2, replace = TRUE))</span></a>
-<a class="sourceLine" id="cb2-48" data-line-number="48"><span class="co">#&gt; [1] 1 3 5 5 3</span></a>
-<a class="sourceLine" id="cb2-49" data-line-number="49"><span class="co">#&gt; exiting from: pipeline_function()</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; debug: print(x &lt;- sample(dot2, replace = TRUE))</span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; [1] 2 8 4 2 6</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt; exiting from: pipeline_function()</span></a></code></pre></div>
+</div>
+<div id="bursting-pipes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bursting-pipes" class="anchor"></a>Bursting pipes</h2>
+<p>Occasionally it is necessary to restructure code from a piped to an unpiped form. <span class="citation">@hrbrmstr</span> dubbed this process “pipe bursting”:</p>
+<blockquote class="twitter-tweet" data-partner="tweetdeck">
+<p lang="en" dir="ltr">
+coined two new phrases whilst making that r pkg script thing:<br><br>- “declawing” == removing purrr as a dependency<br>- “pipe bursting” == moving from clean %&gt;% to sequential &lt;- statements
+</p>
+— boB Rudis (<span class="citation">@hrbrmstr</span>) <a href="https://twitter.com/hrbrmstr/status/1019700751268970502?ref_src=twsrc%5Etfw">July 18, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p>Now <code>burst_pipes</code> makes this sort of restructuring simple:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/burst_pipes.html">burst_pipes</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">        </span>rev <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">        </span>{. <span class="op">*</span><span class="st"> </span><span class="dv">2</span>} <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">        </span>.[<span class="dv">3</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">        </span><span class="kw">rnorm</span>(<span class="dv">1</span>, ., <span class="dt">sd =</span> .<span class="op">/</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">  )</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; dot1 &lt;- rev(1:5)</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; dot2 &lt;- {dot1 * 2}</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; dot3 &lt;- dot2[3]</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; x &lt;- rnorm(1, dot3, sd = dot3/10)</span></a></code></pre></div>
+<p>More specific names can be specified as a character vector:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/burst_pipes.html">burst_pipes</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">    x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">        </span>rev <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">        </span>{. <span class="op">*</span><span class="st"> </span><span class="dv">2</span>} <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">        </span>.[<span class="dv">3</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">        </span><span class="kw">rnorm</span>(<span class="dv">1</span>, ., <span class="dt">sd =</span> .<span class="op">/</span><span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">    <span class="dt">names =</span> <span class="kw">c</span>(<span class="st">"reversed"</span>, <span class="st">"doubled"</span>, <span class="st">"subset"</span>, <span class="st">"x"</span>)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">)</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; reversed &lt;- rev(1:5)</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; doubled &lt;- {reversed * 2}</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; subset &lt;- doubled[3]</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; x &lt;- rnorm(1, subset, sd = subset/10)</span></a></code></pre></div>
+<p><code>burst_pipes</code> can also be called via an RStudio add-in, in which case it will replace the highlighted code with its restructured form.</p>
 </div>
 <div id="limitations" class="section level2">
 <h2 class="hasAnchor">
@@ -148,7 +165,6 @@
 <ul>
 <li>It can only handle the <code>%&gt;%</code> pipe, not more exotic pipes like <code>%$%</code>. For the moment, this is unlikely to change absent significant demand.</li>
 <li>It ignores nested pipelines—e.g. piping within an anonymous function in <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map</a></code>—treating the whole call as one step.</li>
-<li>With <code>data = "insert"</code>, data is only inserted as the first parameter, not everywhere denoted by a <code>.</code> and is sensitive to parentheses on parameterless calls. The <code>data = "pipe"</code> option handles these complications naturally, but is harder to step into within the debugger.</li>
 </ul>
 </div>
 <div id="related" class="section level2">

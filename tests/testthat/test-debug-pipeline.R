@@ -20,26 +20,18 @@ test_that("pipelines get debugged", {
         debugonce = debug_text,
         expect_match(
             {
-                capture.output(debug_pipeline(1:5 %>% rev(), data = "insert"))
+                capture.output(debug_pipeline(1:5 %>% rev()))
                 pipeline_function()
             },
-            "print(dot2 <- rev(dot1))",
+            "print(dot1 <- rev(1:5))",
             fixed = TRUE
         ),
         expect_match(
             {
-                capture.output(debug_pipeline(1:5 %>% rev(), data = "pipe"))
+                capture.output(debug_pipeline("1:5 %>% rev()"))
                 pipeline_function()
             },
-            "print(dot2 <- dot1 %>% rev())",
-            fixed = TRUE
-        ),
-        expect_match(
-            {
-                capture.output(debug_pipeline("1:5 %>% rev()", data = "pipe"))
-                pipeline_function()
-            },
-            "print(dot2 <- dot1 %>% rev())",
+            "print(dot1 <- rev(1:5))",
             fixed = TRUE
         )
     )

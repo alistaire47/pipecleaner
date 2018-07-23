@@ -60,24 +60,52 @@ console.
 
 All together, it looks like this:
 
-```{r example}
+```{r debug_pipeline}
 library(magrittr)
 library(pipecleaner)
 
 debug_pipeline(
-    1:5 %>% 
+    x = 1:5 %>% 
         rev %>% 
         {. * 2} %>% 
         sample(replace = TRUE)
 )
+```
 
-debug_pipeline(
-    1:5 %>% 
-        rev() %>% 
-        sample(replace = TRUE), 
-    data = "insert"    # insert incoming data as first parameter of each call
+## Bursting pipes
+
+Occasionally it is necessary to restructure code from a piped to an unpiped 
+form. @hrbrmstr dubbed this process "pipe bursting": 
+
+<blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">coined two new phrases whilst making that r pkg script thing:<br><br>- &quot;declawing&quot; == removing purrr as a dependency<br>- &quot;pipe bursting&quot; == moving from clean %&gt;% to sequential &lt;- statements</p>&mdash; boB Rudis (@hrbrmstr) <a href="https://twitter.com/hrbrmstr/status/1019700751268970502?ref_src=twsrc%5Etfw">July 18, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+Now `burst_pipes` makes this sort of restructuring simple:
+
+```{r burst_pipes}
+burst_pipes(
+    x = 1:5 %>% 
+        rev %>% 
+        {. * 2} %>% 
+        .[3] %>% 
+        rnorm(1, ., sd = ./10)
+  )
+```
+
+More specific names can be specified as a character vector:
+```{r}
+burst_pipes(
+    x <- 1:5 %>% 
+        rev %>% 
+        {. * 2} %>% 
+        .[3] %>% 
+        rnorm(1, ., sd = ./10),
+    names = c("reversed", "doubled", "subset", "x")
 )
 ```
+
+`burst_pipes` can also be called via an RStudio add-in, in which case it will replace the 
+highlighted code with its restructured form.
 
 ## Limitations
 
@@ -88,10 +116,6 @@ structure, it does have known limitations:
     moment, this is unlikely to change absent significant demand.
 - It ignores nested pipelines—e.g. piping within an anonymous function in 
     `purrr::map`—treating the whole call as one step. 
-- With `data = "insert"`, data is only inserted as the first parameter, not 
-    everywhere denoted by a `.` and is sensitive to parentheses on 
-    parameterless calls. The `data = "pipe"` option handles these complications 
-    naturally, but is harder to step into within the debugger.
     
 ## Related
 

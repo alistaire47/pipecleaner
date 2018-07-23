@@ -58,52 +58,92 @@ library(magrittr)
 library(pipecleaner)
 
 debug_pipeline(
-    1:5 %>% 
+    x = 1:5 %>% 
         rev %>% 
         {. * 2} %>% 
         sample(replace = TRUE)
 )
-#> debugging in: pipeline_function()
+#> dot1 <- rev(1:5)
+#> dot2 <- {dot1 * 2}
+#> x <- sample(dot2, replace = TRUE)debugging in: pipeline_function()
 #> debug: {
-#>     print(dot1 <- 1:5)
-#>     print(dot2 <- dot1 %>% rev)
-#>     print(dot3 <- dot2 %>% {
-#>         . * 2
+#>     print(dot1 <- rev(1:5))
+#>     print(dot2 <- {
+#>         dot1 * 2
 #>     })
-#>     print(dot4 <- dot3 %>% sample(replace = TRUE))
+#>     print(x <- sample(dot2, replace = TRUE))
 #> }
-#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 <- 1:5)
-#> [1] 1 2 3 4 5
-#> debug: print(dot2 <- dot1 %>% rev)
+#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#270: print(dot1 <- rev(1:5))
 #> [1] 5 4 3 2 1
-#> debug: print(dot3 <- dot2 %>% {
-#>     . * 2
+#> debug: print(dot2 <- {
+#>     dot1 * 2
 #> })
+#> debug: dot1 * 2
 #> [1] 10  8  6  4  2
-#> debug: print(dot4 <- dot3 %>% sample(replace = TRUE))
-#> [1] 4 8 6 6 2
-#> exiting from: pipeline_function()
-
-debug_pipeline(
-    1:5 %>% 
-        rev() %>% 
-        sample(replace = TRUE), 
-    data = "insert"    # insert incoming data as first parameter of each call
-)
-#> debugging in: pipeline_function()
-#> debug: {
-#>     print(dot1 <- 1:5)
-#>     print(dot2 <- rev(dot1))
-#>     print(dot3 <- sample(dot2, replace = TRUE))
-#> }
-#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#125: print(dot1 <- 1:5)
-#> [1] 1 2 3 4 5
-#> debug: print(dot2 <- rev(dot1))
-#> [1] 5 4 3 2 1
-#> debug: print(dot3 <- sample(dot2, replace = TRUE))
-#> [1] 1 3 5 5 3
+#> debug: print(x <- sample(dot2, replace = TRUE))
+#> [1] 2 8 4 2 6
 #> exiting from: pipeline_function()
 ```
+
+## Bursting pipes
+
+Occasionally it is necessary to restructure code from a piped to an
+unpiped form. @hrbrmstr dubbed this process “pipe bursting”:
+
+<blockquote class="twitter-tweet" data-partner="tweetdeck">
+
+<p lang="en" dir="ltr">
+
+coined two new phrases whilst making that r pkg script thing:<br><br>-
+“declawing” == removing purrr as a dependency<br>- “pipe bursting” ==
+moving from clean %\>% to sequential \<- statements
+
+</p>
+
+— boB Rudis (@hrbrmstr)
+<a href="https://twitter.com/hrbrmstr/status/1019700751268970502?ref_src=twsrc%5Etfw">July
+18,
+2018</a>
+
+</blockquote>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+Now `burst_pipes` makes this sort of restructuring simple:
+
+``` r
+burst_pipes(
+    x = 1:5 %>% 
+        rev %>% 
+        {. * 2} %>% 
+        .[3] %>% 
+        rnorm(1, ., sd = ./10)
+  )
+#> dot1 <- rev(1:5)
+#> dot2 <- {dot1 * 2}
+#> dot3 <- dot2[3]
+#> x <- rnorm(1, dot3, sd = dot3/10)
+```
+
+More specific names can be specified as a character vector:
+
+``` r
+burst_pipes(
+    x <- 1:5 %>% 
+        rev %>% 
+        {. * 2} %>% 
+        .[3] %>% 
+        rnorm(1, ., sd = ./10),
+    names = c("reversed", "doubled", "subset", "x")
+)
+#> reversed <- rev(1:5)
+#> doubled <- {reversed * 2}
+#> subset <- doubled[3]
+#> x <- rnorm(1, subset, sd = subset/10)
+```
+
+`burst_pipes` can also be called via an RStudio add-in, in which case it
+will replace the highlighted code with its restructured form.
 
 ## Limitations
 
@@ -115,11 +155,6 @@ its structure, it does have known limitations:
     demand.
   - It ignores nested pipelines—e.g. piping within an anonymous function
     in `purrr::map`—treating the whole call as one step.
-  - With `data = "insert"`, data is only inserted as the first
-    parameter, not everywhere denoted by a `.` and is sensitive to
-    parentheses on parameterless calls. The `data = "pipe"` option
-    handles these complications naturally, but is harder to step into
-    within the debugger.
 
 ## Related
 

@@ -21,14 +21,17 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
 <meta property="og:title" content="Changelog" />
+
 
 
 <!-- mathjax -->
@@ -55,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pipecleaner</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2.9000</span>
       </span>
     </div>
 
@@ -98,6 +101,17 @@
       <small>Source: <a href='https://github.com/alistaire47/pipecleaner/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="pipecleaner-0-0-2-9000" class="section level1">
+<h1 class="page-header">
+<a href="#pipecleaner-0-0-2-9000" class="anchor"></a>pipecleaner 0.0.2.9000</h1>
+<ul>
+<li><p>Adds <code>burst_pipes</code> function and RStudio add-in to remove pipes from a pipeline<br>
+and replace them with assignment.</p></li>
+<li><p>Rebuilds <code>data = "insert"</code> behavior of <code>debug_pipeline</code> so dots are replaced with piped-in data properly. Formulas are ignored; nested pipelines are still not supported.</p></li>
+<li><p>Removes <code>data</code> parameter of <code>debug_pipeline</code> and accompanying add-in, as the data insertion behavior is now robust (and more debuggable) thanks to recursive substitution.</p></li>
+<li><p>Enables <code>debug_pipeline</code> and <code>split_pipeline</code> to work with <code>=</code> assignment (in addition to <code>&lt;-</code>) at the start of the pipeline.</p></li>
+</ul>
+</div>
     <div id="pipecleaner-0-0-2" class="section level1">
 <h1 class="page-header">
 <a href="#pipecleaner-0-0-2" class="anchor"></a>pipecleaner 0.0.2</h1>
@@ -121,6 +135,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#pipecleaner-0-0-2-9000">0.0.2.9000</a></li>
         <li><a href="#pipecleaner-0-0-2">0.0.2</a></li>
         <li><a href="#pipecleaner-0-0-1">0.0.1</a></li>
       </ul>
