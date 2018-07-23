@@ -15,14 +15,14 @@ get_pipeline <- function(pipeline, call){
         call_names <- rlang::call_args_names(call)
         call_name <- call_names[call_names != "names"]
         pipeline <- rlang::call2("=", as.name(call_name), call[[call_name]])
+    } else if (!is.language(pipeline) && is.language(call$pipeline)) {
+        pipeline <- call$pipeline
     } else if (is.character(pipeline)) {
         pipeline <- paste(pipeline, collapse = "")
         if (nchar(pipeline) == 0) {
             stop("Input unavailable. Did you highlight a pipeline?", call. = FALSE)
         }
         pipeline <- rlang::parse_expr(pipeline)
-    } else if (!is.language(pipeline) && is.language(call$pipeline)) {
-        pipeline <- call$pipeline
     }
     pipeline
 }
