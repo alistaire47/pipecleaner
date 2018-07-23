@@ -4,27 +4,25 @@
 \alias{split_pipeline}
 \title{Split a pipeline expression into a list of expressions}
 \usage{
-split_pipeline(pipeline)
+split_pipeline(pipeline, ...)
 }
 \arguments{
-\item{pipeline}{An unevaluated expression of a pipeline to be split.}
+\item{pipeline}{A pipeline. Can be an unquoted or quoted expression, or a
+character vector of code. If missing, uses the text highlighted in
+RStudio's source editor.}
+
+\item{...}{Only used to allow assignment with \code{=} at the beginning of a
+pipeline.}
 }
 \value{
-A list of unevaluated expressions of each element piped together.
+A list of unevaluated calls extracted from the pipeline.
 }
 \description{
-\code{split_pipeline} takes an unevaluated expression of a pipeline and splits it
-into a list of expressions.
+\code{split_pipeline} takes an expression of a pipeline and splits it into a list
+of unevaluated calls.
 }
 \details{
-Here "expression" is use colloquially to refer to a bare language object,
-i.e. like those returned by \code{\link{quote}} or \code{\link[rlang:expr]{rlang::expr}}, \emph{not} an object of
-class "expression" like those returned by \code{\link{expression}}. The latter can be
-turned into the former by subsetting, e.g. \code{expression(1:5 \%>\% rev())[[1]]}.
-
 \code{split_pipeline} does not split nested pipelines.
-
-[[1]: R:[1
 }
 \examples{
 \dontrun{
@@ -38,5 +36,6 @@ split_pipeline(
 }
 \seealso{
 The unexported \href{https://github.com/tidyverse/magrittr/blob/master/R/split_chain.R}{\code{magrittr:::split_chain}},
-which does not handle assignment, but collects the particular pipes used.
+does not handle assignment, but collects the particular pipes used.
+\code{\link{burst_pipes}} invisibly returns a restructured split pipeline.
 }

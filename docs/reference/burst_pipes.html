@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run a pipeline step-by-step in the debugging browser — debug_pipeline • pipecleaner</title>
+<title>Replace pipes with intermediate assignment — burst_pipes • pipecleaner</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,14 +30,12 @@
 
 
 
-<meta property="og:title" content="Run a pipeline step-by-step in the debugging browser — debug_pipeline" />
+<meta property="og:title" content="Replace pipes with intermediate assignment — burst_pipes" />
 
-<meta property="og:description" content="debug_pipeline creates a function out of the input pipeline with each line
-running an additional step from the pipeline and calls the debugging browser
-on the function. Each line run prints to the console plus stores the result
-to a variable of the form dot[N], where [N] is the index of the element
-in the pipeline, so results can easily be replicated or adjusted in the
-debugging console." />
+<meta property="og:description" content="burst_pipes rearranges a magrittr pipeline into equivalent unpiped code.
+Called directly, it will print the restructured code to the console. Called
+via the &quot;Burst pipes&quot; RStudio add-in while a pipeline is highlighted, it
+will replace the highlighted code with the restructured code." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -105,23 +103,21 @@ debugging console." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run a pipeline step-by-step in the debugging browser</h1>
+    <h1>Replace pipes with intermediate assignment</h1>
     <small class="dont-index">Source: <a href='https://github.com/alistaire47/pipecleaner/blob/master/R/debug_pipeline.R'><code>R/debug_pipeline.R</code></a></small>
-    <div class="hidden name"><code>debug_pipeline.Rd</code></div>
+    <div class="hidden name"><code>burst_pipes.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>debug_pipeline</code> creates a function out of the input pipeline with each line
-running an additional step from the pipeline and calls the debugging browser
-on the function. Each line run prints to the console plus stores the result
-to a variable of the form <code>dot[N]</code>, where <code>[N]</code> is the index of the element
-in the pipeline, so results can easily be replicated or adjusted in the
-debugging console.</p>
+    <p><code>burst_pipes</code> rearranges a magrittr pipeline into equivalent unpiped code.
+Called directly, it will print the restructured code to the console. Called
+via the "Burst pipes" RStudio add-in while a pipeline is highlighted, it
+will replace the highlighted code with the restructured code.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>debug_pipeline</span>(<span class='no'>pipeline</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>burst_pipes</span>(<span class='no'>pipeline</span>, <span class='no'>names</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,31 +129,44 @@ character vector of code. If missing, uses the text highlighted in
 RStudio's source editor.</p></td>
     </tr>
     <tr>
+      <th>names</th>
+      <td><p>A character vector of names to be used for intermediary
+assignment of a length equal to that of the number of top-level calls in
+the pipeline.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Only used to allow assignment with <code>=</code> at the beginning of a
 pipeline.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list of expressions of the restructured, unpiped code, invisibly.</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>debug_pipeline</code> can also be called interactively in RStudio via the "Debug
-pipeline in browser" add-in after highlighting the pipeline to debug in the
-source editor.</p>
-<p>For a full explanation of the special commands available in the debugging
-browser, see <code>browser</code>.</p>
+    <p>Note that nested pipelines are currently ignored. Calling on pipelines from
+the inside out should still allow restructuring.</p>
+<p>Warning: Calling <code>burst_pipes</code> from the RStudio add-in is currently
+irreversible aside from "Edit &gt; Undo" and version control. Save code
+beforehand and check equivalence afterwards.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>browser</code>, <code><a href='http://www.rdocumentation.org/packages/magrittr/topics/debug_pipe'>magrittr::debug_pipe</a></code>, <a href='burst_pipes.html'>burst_pipes</a></p></div>
+    <div class='dont-index'><p><code><a href='split_pipeline.html'>split_pipeline</a></code> splits a pipeline without restructuring.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>magrittr</span>)
 
-<span class='fu'>debug_pipeline</span>(
-    <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>burst_pipes</span>(<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='no'>.</span>[<span class='fl'>3</span>] <span class='kw'>%&gt;%</span> <span class='fu'>rnorm</span>(<span class='fl'>1</span>, <span class='no'>.</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='no'>.</span>/<span class='fl'>10</span>))
+
+<span class='fu'>burst_pipes</span>(
+    <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='no'>.</span>[<span class='fl'>3</span>] <span class='kw'>%&gt;%</span> <span class='fu'>rnorm</span>(<span class='fl'>1</span>, <span class='no'>.</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='no'>.</span>/<span class='fl'>10</span>),
+    <span class='kw'>names</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"reversed"</span>, <span class='st'>"doubled"</span>, <span class='st'>"x"</span>)
 )
 <span class='co'># }</span><div class='input'>
 </div></pre>
@@ -167,6 +176,8 @@ browser, see <code>browser</code>.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>

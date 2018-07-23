@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • pipecleaner</title>
+<title>Pipeline parser helper function that returns a list of names and calls — parse_pipeline • pipecleaner</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Pipeline parser helper function that returns a list of names and calls — parse_pipeline" />
+
+<meta property="og:description" content="Pipeline parser helper function that returns a list of names and calls" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -95,80 +98,59 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Pipeline parser helper function that returns a list of names and calls</h1>
+    <small class="dont-index">Source: <a href='https://github.com/alistaire47/pipecleaner/blob/master/R/debug_pipeline.R'><code>R/debug_pipeline.R</code></a></small>
+    <div class="hidden name"><code>parse_pipeline.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Pipeline parser helper function that returns a list of names and calls</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="burst_pipes.html">burst_pipes()</a></code> </p>
-        </td>
-        <td><p>Replace pipes with intermediate assignment</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="collapse_nodelist.html">collapse_nodelist()</a></code> </p>
-        </td>
-        <td><p>Recursive helper function for <code>replace_dots</code>. Collapses nested nodelist back
-into a call.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="debug_pipeline.html">debug_pipeline()</a></code> </p>
-        </td>
-        <td><p>Run a pipeline step-by-step in the debugging browser</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_pipeline.html">get_pipeline()</a></code> </p>
-        </td>
-        <td><p>Utility to grab pipeline expression from wherever available</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parse_pipeline.html">parse_pipeline()</a></code> </p>
-        </td>
-        <td><p>Pipeline parser helper function that returns a list of names and calls</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="replace_dots.html">replace_dots()</a></code> </p>
-        </td>
-        <td><p>Recursive helper function that replaces <code>.</code> within a call with a replacement
-expression. Ignores formulas.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="split_pipeline.html">split_pipeline()</a></code> </p>
-        </td>
-        <td><p>Split a pipeline expression into a list of expressions</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>parse_pipeline</span>(<span class='no'>pipeline</span>, <span class='no'>names</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>pipeline</th>
+      <td><p>A pipeline. Can be an unquoted or quoted expression, or a
+character vector of code. If missing, uses the text highlighted in
+RStudio's source editor.</p></td>
+    </tr>
+    <tr>
+      <th>names</th>
+      <td><p>A character vector of names to be used for intermediary
+assignment of a length equal to that of the number of top-level calls in
+the pipeline.</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A list with <code>names</code> and <code>calls</code> elements. The <code>names</code> element
+contains <code>data</code> and <code>assign</code> sub-elements.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='split_pipeline.html'>split_pipeline</a></code>, <code><a href='burst_pipes.html'>burst_pipes</a></code></p></div>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
+
   </div>
 </div>
 
