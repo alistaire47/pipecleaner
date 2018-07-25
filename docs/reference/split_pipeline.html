@@ -147,13 +147,24 @@ does not handle assignment, but collects the particular pipes used.
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>magrittr</span>)
 
 <span class='fu'>split_pipeline</span>(
     <span class='fu'>quote</span>(<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-)
-<span class='co'># }</span><div class='input'>
+)</div><div class='output co'>#&gt; [[1]]
+#&gt; x &lt;- 1:5
+#&gt; 
+#&gt; [[2]]
+#&gt; rev
+#&gt; 
+#&gt; [[3]]
+#&gt; {
+#&gt;     . * 2
+#&gt; }
+#&gt; 
+#&gt; [[4]]
+#&gt; sample(replace = TRUE)
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

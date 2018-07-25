@@ -36,14 +36,14 @@ irreversible aside from "Edit > Undo" and version control. Save code
 beforehand and check equivalence afterwards.
 }
 \examples{
-\dontrun{
+\donttest{
 library(magrittr)
 
 burst_pipes(x <- 1:5 \%>\% rev \%>\% {. * 2} \%>\% .[3] \%>\% rnorm(1, ., sd = ./10))
 
 burst_pipes(
     x = 1:5 \%>\% rev \%>\% {. * 2} \%>\% .[3] \%>\% rnorm(1, ., sd = ./10),
-    names = c("reversed", "doubled", "x")
+    names = c("reversed", "doubled", "third", "x")
 )
 }
 

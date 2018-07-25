@@ -31,7 +31,7 @@ For a full explanation of the special commands available in the debugging
 browser, see \code{\link{browser}}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(magrittr)
 
 debug_pipeline(
@@ -41,5 +41,5 @@ debug_pipeline(
 
 }
 \seealso{
-\code{\link{browser}}, \code{\link[magrittr:debug_pipe]{magrittr::debug_pipe}}, \link{burst_pipes}
+\code{\link{browser}}, \code{\link[magrittr:debug_pipe]{magrittr::debug_pipe}}, \code{\link{burst_pipes}}
 }

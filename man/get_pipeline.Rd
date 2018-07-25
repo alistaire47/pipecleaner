@@ -4,7 +4,7 @@
 \alias{get_pipeline}
 \title{Utility to grab pipeline expression from wherever available}
 \usage{
-get_pipeline(pipeline, call)
+get_pipeline(pipeline, call, parse = TRUE, ...)
 }
 \arguments{
 \item{pipeline}{A pipeline. Can be an unquoted or quoted expression, or a
@@ -12,7 +12,14 @@ character vector of code. If missing, uses the text highlighted in
 RStudio's source editor.}
 
 \item{call}{An expression of the parent call, as captured by \code{\link{match.call}}}
+
+\item{parse}{If \code{TRUE}, parses pipeline as \code{\link{debug_pipeline}}. If \code{FALSE},
+takes pipeline as an already-parsed expression.}
+
+\item{...}{Only used to allow assignment with \code{=} at the beginning of a
+pipeline.}
 }
 \description{
 Utility to grab pipeline expression from wherever available
 }
+\keyword{internal}

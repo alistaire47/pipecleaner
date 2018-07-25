@@ -159,16 +159,19 @@ beforehand and check equivalence afterwards.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>magrittr</span>)
 
-<span class='fu'>burst_pipes</span>(<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='no'>.</span>[<span class='fl'>3</span>] <span class='kw'>%&gt;%</span> <span class='fu'>rnorm</span>(<span class='fl'>1</span>, <span class='no'>.</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='no'>.</span>/<span class='fl'>10</span>))
-
+<span class='fu'>burst_pipes</span>(<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='no'>.</span>[<span class='fl'>3</span>] <span class='kw'>%&gt;%</span> <span class='fu'>rnorm</span>(<span class='fl'>1</span>, <span class='no'>.</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='no'>.</span>/<span class='fl'>10</span>))</div><div class='output co'>#&gt; dot1 &lt;- rev(1:5)
+#&gt; dot2 &lt;- {dot1 * 2}
+#&gt; dot3 &lt;- dot2[3]
+#&gt; x &lt;- rnorm(1, dot3, sd = dot3/10)</div><div class='input'>
 <span class='fu'>burst_pipes</span>(
     <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='no'>.</span>[<span class='fl'>3</span>] <span class='kw'>%&gt;%</span> <span class='fu'>rnorm</span>(<span class='fl'>1</span>, <span class='no'>.</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='no'>.</span>/<span class='fl'>10</span>),
-    <span class='kw'>names</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"reversed"</span>, <span class='st'>"doubled"</span>, <span class='st'>"x"</span>)
-)
-<span class='co'># }</span><div class='input'>
+    <span class='kw'>names</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"reversed"</span>, <span class='st'>"doubled"</span>, <span class='st'>"third"</span>, <span class='st'>"x"</span>)
+)</div><div class='output co'>#&gt; reversed &lt;- rev(1:5)
+#&gt; doubled &lt;- {reversed * 2}
+#&gt; third &lt;- doubled[3]
+#&gt; x &lt;- rnorm(1, third, sd = third/10)</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

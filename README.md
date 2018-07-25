@@ -73,7 +73,7 @@ debug_pipeline(
 #>     })
 #>     print(x <- sample(dot2, replace = TRUE))
 #> }
-#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#270: print(dot1 <- rev(1:5))
+#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#286: print(dot1 <- rev(1:5))
 #> [1] 5 4 3 2 1
 #> debug: print(dot2 <- {
 #>     dot1 * 2
@@ -134,12 +134,12 @@ burst_pipes(
         {. * 2} %>% 
         .[3] %>% 
         rnorm(1, ., sd = ./10),
-    names = c("reversed", "doubled", "subset", "x")
+    names = c("reversed", "doubled", "third", "x")
 )
 #> reversed <- rev(1:5)
 #> doubled <- {reversed * 2}
-#> subset <- doubled[3]
-#> x <- rnorm(1, subset, sd = subset/10)
+#> third <- doubled[3]
+#> x <- rnorm(1, third, sd = third/10)
 ```
 
 `burst_pipes` can also be called via an RStudio add-in, in which case it
@@ -150,11 +150,11 @@ will replace the highlighted code with its restructured form.
 pipecleaner should successfully debug most pipelines. However, due to
 its structure, it does have known limitations:
 
-  - It can only handle the `%>%` pipe, not more exotic pipes like `%$%`.
+  - Only the `%>%` pipe is handled, not more exotic pipes like `%$%`.
     For the moment, this is unlikely to change absent significant
     demand.
-  - It ignores nested pipelines—e.g. piping within an anonymous function
-    in `purrr::map`—treating the whole call as one step.
+  - Nested pipelines—e.g. piping within an anonymous function in
+    `purrr::map`—are ignored; the whole call is treated as one step.
 
 ## Related
 

@@ -149,17 +149,34 @@ browser, see <code>browser</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>browser</code>, <code><a href='http://www.rdocumentation.org/packages/magrittr/topics/debug_pipe'>magrittr::debug_pipe</a></code>, <a href='burst_pipes.html'>burst_pipes</a></p></div>
+    <div class='dont-index'><p><code>browser</code>, <code><a href='http://www.rdocumentation.org/packages/magrittr/topics/debug_pipe'>magrittr::debug_pipe</a></code>, <code><a href='burst_pipes.html'>burst_pipes</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>magrittr</span>)
 
 <span class='fu'>debug_pipeline</span>(
     <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span> <span class='kw'>%&gt;%</span> <span class='no'>rev</span> <span class='kw'>%&gt;%</span> {<span class='no'>.</span> * <span class='fl'>2</span>} <span class='kw'>%&gt;%</span> <span class='fu'>sample</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-)
-<span class='co'># }</span><div class='input'>
+)</div><div class='output co'>#&gt; dot1 &lt;- rev(1:5)
+#&gt; dot2 &lt;- {dot1 * 2}
+#&gt; x &lt;- sample(dot2, replace = TRUE)debugging in: pipeline_function()
+#&gt; debug: {
+#&gt;     print(dot1 &lt;- rev(1:5))
+#&gt;     print(dot2 &lt;- {
+#&gt;         dot1 * 2
+#&gt;     })
+#&gt;     print(x &lt;- sample(dot2, replace = TRUE))
+#&gt; }
+#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#286: print(dot1 &lt;- rev(1:5))
+#&gt; [1] 5 4 3 2 1
+#&gt; debug: print(dot2 &lt;- {
+#&gt;     dot1 * 2
+#&gt; })
+#&gt; debug: dot1 * 2
+#&gt; [1] 10  8  6  4  2
+#&gt; debug: print(x &lt;- sample(dot2, replace = TRUE))
+#&gt; [1] 10  2  4 10 10
+#&gt; exiting from: pipeline_function()</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

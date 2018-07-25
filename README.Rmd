@@ -100,22 +100,22 @@ burst_pipes(
         {. * 2} %>% 
         .[3] %>% 
         rnorm(1, ., sd = ./10),
-    names = c("reversed", "doubled", "subset", "x")
+    names = c("reversed", "doubled", "third", "x")
 )
 ```
 
-`burst_pipes` can also be called via an RStudio add-in, in which case it will replace the 
-highlighted code with its restructured form.
+`burst_pipes` can also be called via an RStudio add-in, in which case it will 
+replace the highlighted code with its restructured form.
 
 ## Limitations
 
 pipecleaner should successfully debug most pipelines. However, due to its 
 structure, it does have known limitations:
 
-- It can only handle the `%>%` pipe, not more exotic pipes like `%$%`. For the 
+- Only the `%>%` pipe is handled, not more exotic pipes like `%$%`. For the 
     moment, this is unlikely to change absent significant demand.
-- It ignores nested pipelines—e.g. piping within an anonymous function in 
-    `purrr::map`—treating the whole call as one step. 
+- Nested pipelines—e.g. piping within an anonymous function in 
+    `purrr::map`—are ignored; the whole call is treated as one step. 
     
 ## Related
 

@@ -4,7 +4,7 @@
 \alias{parse_pipeline}
 \title{Pipeline parser helper function that returns a list of names and calls}
 \usage{
-parse_pipeline(pipeline, names)
+parse_pipeline(pipeline, names, ...)
 }
 \arguments{
 \item{pipeline}{A pipeline. Can be an unquoted or quoted expression, or a
@@ -14,6 +14,8 @@ RStudio's source editor.}
 \item{names}{A character vector of names to be used for intermediary
 assignment of a length equal to that of the number of top-level calls in
 the pipeline.}
+
+\item{...}{Passed to \code{\link{split_pipeline}}}
 }
 \value{
 A list with \code{names} and \code{calls} elements. The \code{names} element
@@ -25,3 +27,4 @@ Pipeline parser helper function that returns a list of names and calls
 \seealso{
 \code{\link{split_pipeline}}, \code{\link{burst_pipes}}
 }
+\keyword{internal}

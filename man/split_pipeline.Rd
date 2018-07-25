@@ -25,7 +25,7 @@ of unevaluated calls.
 \code{split_pipeline} does not split nested pipelines.
 }
 \examples{
-\dontrun{
+\donttest{
 library(magrittr)
 
 split_pipeline(

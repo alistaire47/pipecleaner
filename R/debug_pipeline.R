@@ -1,9 +1,14 @@
 #' Utility to grab pipeline expression from wherever available
 #'
 #' @param call An expression of the parent call, as captured by [`match.call`]
+#' @param parse If `TRUE`, parses pipeline as [`debug_pipeline`]. If `FALSE`,
+#'     takes pipeline as an already-parsed expression.
 #' @inheritParams debug_pipeline
-get_pipeline <- function(pipeline, call){
-    if (missing(pipeline) && length(rlang::call_args(call)) == 0) {
+#' @keywords internal
+get_pipeline <- function(pipeline, call, parse = TRUE, ...){
+    if (!parse) {
+        # don't re-parse
+    } else if (missing(pipeline) && length(rlang::call_args(call)) == 0) {
         pipeline <- rstudioapi::getSourceEditorContext()$selection[[1]]$text
         if (nchar(pipeline) == 0) {
             stop("Input unavailable. Did you highlight a pipeline?", call. = FALSE)
@@ -13,9 +18,12 @@ get_pipeline <- function(pipeline, call){
     } else if (all(rlang::call_args_names(call) != "pipeline")) {
         # handle assignment with `=`
         call_names <- rlang::call_args_names(call)
-        call_name <- call_names[call_names != "names"]
+        call_name <- call_names[!call_names %in% c("names", "parse")]
         pipeline <- rlang::call2("=", as.name(call_name), call[[call_name]])
-    } else if (!is.language(pipeline) && is.language(call$pipeline)) {
+    } else if (is.language(call$pipeline)) {
+        if (!rlang::call_name(call$pipeline) %in% c("%>%", "<-", "=")) {
+            call$pipeline <- eval(call$pipeline)
+        }
         pipeline <- call$pipeline
     } else if (is.character(pipeline)) {
         pipeline <- paste(pipeline, collapse = "")
@@ -39,7 +47,7 @@ get_pipeline <- function(pipeline, call){
 #' @return A list of unevaluated calls extracted from the pipeline.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(magrittr)
 #'
 #' split_pipeline(
@@ -52,11 +60,11 @@ get_pipeline <- function(pipeline, call){
 #'     [`burst_pipes`] invisibly returns a restructured split pipeline.
 #' @export
 split_pipeline <- function(pipeline, ...){
-    pipeline <- get_pipeline(pipeline, match.call())
+    pipeline <- get_pipeline(pipeline, call = match.call(), ...)
     if (inherits(pipeline, "call") && rlang::call_name(pipeline) == "%>%") {
-        c(split_pipeline(pipeline[[2]]), pipeline[[3]])
+        c(split_pipeline(pipeline[[2]], parse = FALSE), pipeline[[3]])
     } else if (inherits(pipeline, c("<-", "="))) {
-        x <- split_pipeline(pipeline[[3]])
+        x <- split_pipeline(pipeline[[3]], parse = FALSE)
         c(rlang::call_modify(pipeline[1:2], x[[1]]), x[-1])
     } else {
         pipeline
@@ -69,6 +77,7 @@ split_pipeline <- function(pipeline, ...){
 #' @param nodelist A list of calls, with parameters nested, of arbitrary depth
 #'
 #' @seealso [`replace_dots`]
+#' @keywords internal
 collapse_nodelist <- function(nodelist) {
     if (length(nodelist) == 1) return(nodelist)    # return atomics
     if (any(lengths(as.list(nodelist)) != 1)) {
@@ -86,9 +95,14 @@ collapse_nodelist <- function(nodelist) {
 #' @param replacement A quoted name with which to replace dots
 #'
 #' @seealso [`collapse_nodelist`]
+#' @keywords internal
 replace_dots <- function(call, replacement){
     if (!rlang::is_formula(call) && length(call) > 1) {
         call <- lapply(call, replace_dots, replacement = replacement)    # recurse
+    } else if (rlang::is_pairlist(call)) {    # for function formals
+        call <- lapply(call, replace_dots, replacement = replacement)
+        names(call)[names(call) == "."] <- as.character(replacement)
+        call <- as.pairlist(call)
     } else if (call == as.name(".")) {
         call <- replacement    # replace
     }
@@ -100,11 +114,13 @@ replace_dots <- function(call, replacement){
 #' @return A list with `names` and `calls` elements. The `names` element
 #'     contains `data` and `assign` sub-elements.
 #'
+#' @param ... Passed to [`split_pipeline`]
 #' @inheritParams burst_pipes
 #'
 #' @seealso [`split_pipeline`], [`burst_pipes`]
-parse_pipeline <- function(pipeline, names){
-    pipe_lines <- split_pipeline(pipeline)
+#' @keywords internal
+parse_pipeline <- function(pipeline, names, ...){
+    pipe_lines <- split_pipeline(pipeline, ...)
     if (missing(names)) {
         names <- paste0("dot", seq_along(pipe_lines[-1]))
     }
@@ -157,21 +173,21 @@ parse_pipeline <- function(pipeline, names){
 #' @seealso [`split_pipeline`] splits a pipeline without restructuring.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(magrittr)
 #'
 #' burst_pipes(x <- 1:5 %>% rev %>% {. * 2} %>% .[3] %>% rnorm(1, ., sd = ./10))
 #'
 #' burst_pipes(
 #'     x = 1:5 %>% rev %>% {. * 2} %>% .[3] %>% rnorm(1, ., sd = ./10),
-#'     names = c("reversed", "doubled", "x")
+#'     names = c("reversed", "doubled", "third", "x")
 #' )
 #' }
 #'
 #' @export
 burst_pipes <- function(pipeline, names, ...){
-    pipeline <- get_pipeline(pipeline, call = match.call())
-    parts <- parse_pipeline(pipeline, names)
+    pipeline <- get_pipeline(pipeline, call = match.call(), ...)
+    parts <- parse_pipeline(pipeline, names, parse = FALSE)
 
     # Insert first-level data
     parts$calls <- Map(
@@ -247,7 +263,7 @@ burst_pipes <- function(pipeline, names, ...){
 #'     pipeline.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(magrittr)
 #'
 #' debug_pipeline(
@@ -255,12 +271,12 @@ burst_pipes <- function(pipeline, names, ...){
 #' )
 #' }
 #'
-#' @seealso [`browser`], [`magrittr::debug_pipe`], [burst_pipes]
+#' @seealso [`browser`], [`magrittr::debug_pipe`], [`burst_pipes`]
 #' @export
 debug_pipeline <- function(pipeline, ...){
     pipeline <- get_pipeline(pipeline, call = match.call())
 
-    pipe_lines <- burst_pipes(pipeline, ...)
+    pipe_lines <- burst_pipes(pipeline, parse = FALSE, ...)
     pipe_lines <- lapply(pipe_lines, function(part){
         rlang::expr(print(!!part))
     })

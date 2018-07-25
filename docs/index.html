@@ -110,7 +110,7 @@
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;     })</span></a>
 <a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;     print(x &lt;- sample(dot2, replace = TRUE))</span></a>
 <a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#270: print(dot1 &lt;- rev(1:5))</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#286: print(dot1 &lt;- rev(1:5))</span></a>
 <a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; [1] 5 4 3 2 1</span></a>
 <a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; debug: print(dot2 &lt;- {</span></a>
 <a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;     dot1 * 2</span></a>
@@ -150,12 +150,12 @@ coined two new phrases whilst making that r pkg script thing:<br><br>- “declaw
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">        </span>{. <span class="op">*</span><span class="st"> </span><span class="dv">2</span>} <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">        </span>.[<span class="dv">3</span>] <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">        </span><span class="kw">rnorm</span>(<span class="dv">1</span>, ., <span class="dt">sd =</span> .<span class="op">/</span><span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">    <span class="dt">names =</span> <span class="kw">c</span>(<span class="st">"reversed"</span>, <span class="st">"doubled"</span>, <span class="st">"subset"</span>, <span class="st">"x"</span>)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">    <span class="dt">names =</span> <span class="kw">c</span>(<span class="st">"reversed"</span>, <span class="st">"doubled"</span>, <span class="st">"third"</span>, <span class="st">"x"</span>)</a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">)</a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; reversed &lt;- rev(1:5)</span></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; doubled &lt;- {reversed * 2}</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; subset &lt;- doubled[3]</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; x &lt;- rnorm(1, subset, sd = subset/10)</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; third &lt;- doubled[3]</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; x &lt;- rnorm(1, third, sd = third/10)</span></a></code></pre></div>
 <p><code>burst_pipes</code> can also be called via an RStudio add-in, in which case it will replace the highlighted code with its restructured form.</p>
 </div>
 <div id="limitations" class="section level2">
@@ -163,8 +163,8 @@ coined two new phrases whilst making that r pkg script thing:<br><br>- “declaw
 <a href="#limitations" class="anchor"></a>Limitations</h2>
 <p>pipecleaner should successfully debug most pipelines. However, due to its structure, it does have known limitations:</p>
 <ul>
-<li>It can only handle the <code>%&gt;%</code> pipe, not more exotic pipes like <code>%$%</code>. For the moment, this is unlikely to change absent significant demand.</li>
-<li>It ignores nested pipelines—e.g. piping within an anonymous function in <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map</a></code>—treating the whole call as one step.</li>
+<li>Only the <code>%&gt;%</code> pipe is handled, not more exotic pipes like <code>%$%</code>. For the moment, this is unlikely to change absent significant demand.</li>
+<li>Nested pipelines—e.g. piping within an anonymous function in <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map</a></code>—are ignored; the whole call is treated as one step.</li>
 </ul>
 </div>
 <div id="related" class="section level2">

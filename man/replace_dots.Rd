@@ -22,3 +22,4 @@ expression. Ignores formulas.
 \seealso{
 \code{\link{collapse_nodelist}}
 }
+\keyword{internal}
