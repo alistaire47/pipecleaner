@@ -2,10 +2,14 @@
 burst_pipes_addin <- function() {
     pipeline_text <- rstudioapi::getSourceEditorContext()$selection[[1]]$text
     if (pipeline_text == "") {
+        pipeline_init <- ""
         initial_tab <- "Change pipeline"
     } else {
-        pipeline_init <- rlang::parse_expr(pipeline_text)
-        n_lines <- length(split_pipeline(pipeline_init, parse = FALSE)) - 1
+        pipeline_expr <- rlang::parse_expr(pipeline_text)
+        n_lines <- length(split_pipeline(pipeline_expr, parse = FALSE)) - 1
+        pipeline_init <- utils::capture.output(
+            burst_pipes(pipeline_init, parse = FALSE)
+        )
         initial_tab <- "Set names"
     }
 
@@ -42,9 +46,7 @@ burst_pipes_addin <- function() {
                         ),
                         shinyAce::aceEditor(
                             "code",
-                            value = utils::capture.output(
-                                burst_pipes(pipeline_init, parse = FALSE)
-                            ),
+                            value = pipeline_init,
                             mode = "r",
                             theme = "tomorrow",
                             wordWrap = TRUE,
