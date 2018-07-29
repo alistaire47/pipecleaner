@@ -73,7 +73,7 @@ debug_pipeline(
 #>     })
 #>     print(x <- sample(dot2, replace = TRUE))
 #> }
-#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#286: print(dot1 <- rev(1:5))
+#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#271: print(dot1 <- rev(1:5))
 #> [1] 5 4 3 2 1
 #> debug: print(dot2 <- {
 #>     dot1 * 2
@@ -105,9 +105,9 @@ moving from clean %\>% to sequential \<- statements
 18,
 2018</a>
 
-</blockquote>
-
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</blockquote>
 
 Now `burst_pipes` makes this sort of restructuring simple:
 
@@ -142,8 +142,10 @@ burst_pipes(
 #> x <- rnorm(1, third, sd = third/10)
 ```
 
-`burst_pipes` can also be called via an RStudio add-in, in which case it
-will replace the highlighted code with its restructured form.
+`burst_pipes` can also be called via a pair of RStudio add-ins, which
+replace the highlighted code with its restructured form. The “Burst
+pipes” add-in creates names; the “Burst pipes and set names” add-in
+allows custom names to be set.
 
 ## Limitations
 

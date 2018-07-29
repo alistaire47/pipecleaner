@@ -19,7 +19,4 @@ A call with the dots replaced
 Recursive helper function that replaces \code{.} within a call with a replacement
 expression. Ignores formulas.
 }
-\seealso{
-\code{\link{collapse_nodelist}}
-}
 \keyword{internal}

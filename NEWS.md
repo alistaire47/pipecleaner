@@ -1,7 +1,7 @@
 # pipecleaner 0.0.2.9000
 
-* Adds `burst_pipes` function and RStudio add-in to remove pipes from a pipeline  
-    and replace them with assignment.
+* Adds `burst_pipes` function and a pair of RStudio add-ins to remove pipes 
+    from a pipeline and replace them with assignment.
 
 * Rebuilds `data = "insert"` behavior of `debug_pipeline` so dots are replaced 
     with piped-in data properly. Formulas are ignored; nested pipelines are 

@@ -105,8 +105,7 @@
 <h1 class="page-header">
 <a href="#pipecleaner-0-0-2-9000" class="anchor"></a>pipecleaner 0.0.2.9000</h1>
 <ul>
-<li><p>Adds <code>burst_pipes</code> function and RStudio add-in to remove pipes from a pipeline<br>
-and replace them with assignment.</p></li>
+<li><p>Adds <code>burst_pipes</code> function and a pair of RStudio add-ins to remove pipes from a pipeline and replace them with assignment.</p></li>
 <li><p>Rebuilds <code>data = "insert"</code> behavior of <code>debug_pipeline</code> so dots are replaced with piped-in data properly. Formulas are ignored; nested pipelines are still not supported.</p></li>
 <li><p>Removes <code>data</code> parameter of <code>debug_pipeline</code> and accompanying add-in, as the data insertion behavior is now robust (and more debuggable) thanks to recursive substitution.</p></li>
 <li><p>Enables <code>debug_pipeline</code> and <code>split_pipeline</code> to work with <code>=</code> assignment (in addition to <code>&lt;-</code>) at the start of the pipeline.</p></li>

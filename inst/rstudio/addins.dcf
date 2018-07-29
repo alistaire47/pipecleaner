@@ -7,3 +7,8 @@ Name: Burst pipes
 Description: Replace pipes with intermediate assignment
 Binding: burst_pipes
 Interactive: false
+
+Name: Burst pipes and set names
+Description: Replace pipes with intermediate assignment to specified names
+Binding: burst_pipes_addin
+Interactive: true

@@ -25,7 +25,8 @@ A list of expressions of the restructured, unpiped code, invisibly.
 \code{burst_pipes} rearranges a magrittr pipeline into equivalent unpiped code.
 Called directly, it will print the restructured code to the console. Called
 via the "Burst pipes" RStudio add-in while a pipeline is highlighted, it
-will replace the highlighted code with the restructured code.
+will replace the highlighted code with the restructured code. The "Burst
+pipes and set names" add-in opens a Shiny gadget in which names can be set.
 }
 \details{
 Note that nested pipelines are currently ignored. Calling on pipelines from

@@ -71,21 +71,6 @@ split_pipeline <- function(pipeline, ...){
     }
 }
 
-#' Recursive helper function for `replace_dots`. Collapses nested nodelist back
-#' into a call.
-#'
-#' @param nodelist A list of calls, with parameters nested, of arbitrary depth
-#'
-#' @seealso [`replace_dots`]
-#' @keywords internal
-collapse_nodelist <- function(nodelist) {
-    if (length(nodelist) == 1) return(nodelist)    # return atomics
-    if (any(lengths(as.list(nodelist)) != 1)) {
-        nodelist <- lapply(nodelist, collapse_nodelist)    # recurse nested calls
-    }
-    as.call(nodelist)
-}
-
 #' Recursive helper function that replaces `.` within a call with a replacement
 #' expression. Ignores formulas.
 #'
@@ -94,11 +79,11 @@ collapse_nodelist <- function(nodelist) {
 #' @param call A quoted call in which to replace dots
 #' @param replacement A quoted name with which to replace dots
 #'
-#' @seealso [`collapse_nodelist`]
 #' @keywords internal
 replace_dots <- function(call, replacement){
     if (!rlang::is_formula(call) && length(call) > 1) {
         call <- lapply(call, replace_dots, replacement = replacement)    # recurse
+        call <- as.call(call)
     } else if (rlang::is_pairlist(call)) {    # for function formals
         call <- lapply(call, replace_dots, replacement = replacement)
         names(call)[names(call) == "."] <- as.character(replacement)
@@ -106,7 +91,7 @@ replace_dots <- function(call, replacement){
     } else if (call == as.name(".")) {
         call <- replacement    # replace
     }
-    collapse_nodelist(call)
+    call
 }
 
 #' Pipeline parser helper function that returns a list of names and calls
@@ -154,7 +139,8 @@ parse_pipeline <- function(pipeline, names, ...){
 #' `burst_pipes` rearranges a magrittr pipeline into equivalent unpiped code.
 #' Called directly, it will print the restructured code to the console. Called
 #' via the "Burst pipes" RStudio add-in while a pipeline is highlighted, it
-#' will replace the highlighted code with the restructured code.
+#' will replace the highlighted code with the restructured code. The "Burst
+#' pipes and set names" add-in opens a Shiny gadget in which names can be set.
 #'
 #' Note that nested pipelines are currently ignored. Calling on pipelines from
 #' the inside out should still allow restructuring.
