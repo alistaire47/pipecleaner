@@ -24,8 +24,8 @@ successive element.
 pipecleaner is not currently on CRAN, but can be installed with
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("alistaire47/pipecleaner")
+# install.packages("remotes")
+remotes::install_github("alistaire47/pipecleaner")
 ```
 
 ## Debugging pipelines
