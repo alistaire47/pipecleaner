@@ -73,7 +73,7 @@ debug_pipeline(
 #>     })
 #>     print(x <- sample(dot2, replace = TRUE))
 #> }
-#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#271: print(dot1 <- rev(1:5))
+#> debug at /Users/alistaire/Documents/R_projects/pipecleaner/R/debug_pipeline.R#272: print(dot1 <- rev(1:5))
 #> [1] 5 4 3 2 1
 #> debug: print(dot2 <- {
 #>     dot1 * 2
@@ -81,35 +81,14 @@ debug_pipeline(
 #> debug: dot1 * 2
 #> [1] 10  8  6  4  2
 #> debug: print(x <- sample(dot2, replace = TRUE))
-#> [1] 2 8 4 2 6
+#> [1]  6 10  8  4 10
 #> exiting from: pipeline_function()
 ```
 
 ## Bursting pipes
 
 Occasionally it is necessary to restructure code from a piped to an
-unpiped form. @hrbrmstr dubbed this process “pipe bursting”:
-
-<blockquote class="twitter-tweet" data-partner="tweetdeck">
-
-<p lang="en" dir="ltr">
-
-coined two new phrases whilst making that r pkg script thing:<br><br>-
-“declawing” == removing purrr as a dependency<br>- “pipe bursting” ==
-moving from clean %\>% to sequential \<- statements
-
-</p>
-
-— boB Rudis (@hrbrmstr)
-<a href="https://twitter.com/hrbrmstr/status/1019700751268970502?ref_src=twsrc%5Etfw">July
-18,
-2018</a>
-
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-</blockquote>
-
-Now `burst_pipes` makes this sort of restructuring simple:
+unpiped form. Now `burst_pipes` makes this sort of restructuring simple:
 
 ``` r
 burst_pipes(

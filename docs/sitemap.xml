@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://alistaire47.github.io/pipecleaner//index.html</loc>
+  </url>
+  <url>
+    <loc>https://alistaire47.github.io/pipecleaner//reference/burst_pipes.html</loc>
+  </url>
+  <url>
+    <loc>https://alistaire47.github.io/pipecleaner//reference/debug_pipeline.html</loc>
+  </url>
+  <url>
+    <loc>https://alistaire47.github.io/pipecleaner//reference/get_pipeline.html</loc>
+  </url>
+  <url>
+    <loc>https://alistaire47.github.io/pipecleaner//reference/parse_pipeline.html</loc>
+  </url>
+  <url>
+    <loc>https://alistaire47.github.io/pipecleaner//reference/replace_dots.html</loc>
+  </url>
+  <url>
+    <loc>https://alistaire47.github.io/pipecleaner//reference/split_pipeline.html</loc>
+  </url>
+</urlset>

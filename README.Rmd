@@ -75,12 +75,7 @@ debug_pipeline(
 ## Bursting pipes
 
 Occasionally it is necessary to restructure code from a piped to an unpiped 
-form. @hrbrmstr dubbed this process "pipe bursting": 
-
-<blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">coined two new phrases whilst making that r pkg script thing:<br><br>- &quot;declawing&quot; == removing purrr as a dependency<br>- &quot;pipe bursting&quot; == moving from clean %&gt;% to sequential &lt;- statements</p>&mdash; boB Rudis (@hrbrmstr) <a href="https://twitter.com/hrbrmstr/status/1019700751268970502?ref_src=twsrc%5Etfw">July 18, 2018</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></blockquote>
-
-
-Now `burst_pipes` makes this sort of restructuring simple:
+form. Now `burst_pipes` makes this sort of restructuring simple:
 
 ```{r burst_pipes}
 burst_pipes(

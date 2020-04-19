@@ -2,8 +2,16 @@ Type: Package
 Package: pipecleaner
 Title: Debug and Refactor magrittr Pipelines
 Version: 0.0.2.9000
-Authors@R: person("Edward", "Visel", email = "edward.visel@gmail.com", 
-                  role = c("aut", "cre"))
+Authors@R:
+    c(
+        person(
+            given = "Edward",
+            family = "Visel",
+            role = c("aut", "cre"),
+            email = "edward.visel@gmail.com",
+            comment = c(ORCID = "0000-0002-2811-6254")
+        )
+    )
 Description: Tools for refactoring and debugging magrittr pipelines.
 License: GPL-3
 URL: https://github.com/alistaire47/pipecleaner
@@ -23,4 +31,4 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 7.1.0

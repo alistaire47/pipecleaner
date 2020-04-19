@@ -8,7 +8,7 @@ burst_pipes_addin <- function() {
         pipeline_expr <- rlang::parse_expr(pipeline_text)
         n_lines <- length(split_pipeline(pipeline_expr, parse = FALSE)) - 1
         pipeline_init <- utils::capture.output(
-            burst_pipes(pipeline_init, parse = FALSE)
+            burst_pipes(pipeline_expr, parse = FALSE)
         )
         initial_tab <- "Set names"
     }

@@ -183,7 +183,7 @@ burst_pipes <- function(pipeline, names, ...){
                 if (is.symbol(part)) {
                     part <- rlang::call2(part)    # handle parentheses-less calls
                 }
-                rlang::expr(rlang::UQ(part[[1]])(    # function name
+                rlang::expr(UQ(part[[1]])(    # function name
                     !!name,    # data piped in
                     !!!rlang::call_args(part))    # function parameters
                 )

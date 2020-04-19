@@ -18,7 +18,7 @@ pipeline.}
 \code{debug_pipeline} creates a function out of the input pipeline with each line
 running an additional step from the pipeline and calls the debugging browser
 on the function. Each line run prints to the console plus stores the result
-to a variable of the form \code{dot[N]}, where \code{[N]} is the index of the element
+to a variable of the form \code{dot[N]}, where \verb{[N]} is the index of the element
 in the pipeline, so results can easily be replicated or adjusted in the
 debugging console.
 }
